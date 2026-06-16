@@ -44,3 +44,17 @@ agents/_analysis/
 .opencode/
 
 gif_frames/
+
+# VRAX runtime campaign data (generated per run, not source)
+# Keep campaigns/config/ tracked; ignore everything else under campaigns/
+campaigns/active.json
+campaigns/demo_exe
+campaigns/*/
+!campaigns/config/
+
+# Vendored reference repos (never push third-party source trees)
+opencode-1.17.7/
+MiMo-Code-0.1.1/
+
+# Local archive of obsolete mocks / scratch (off-repo)
+vrax-archive/

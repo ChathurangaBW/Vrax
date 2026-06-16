@@ -1,0 +1,42 @@
+Introducing VRAX — Autonomous Binary Reverse Engineering, Powered by AI Swarm Intelligence
+
+What if reverse engineering didn't require an analyst sitting behind a disassembler for hours? That's the problem I set out to solve.
+
+VRAX is an autonomous platform that coordinates a swarm of specialized AI agents to perform end-to-end binary reverse engineering — from initial triage to validated vulnerability findings — with minimal human intervention.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Problem:
+Traditional binary analysis is slow and heavily manual. Security researchers spend hours on repetitive tasks. Most AI tools just act as simple assistants. VRAX takes a fundamentally different approach.
+
+How It Works:
+VRAX deploys a council of specialized AI agents that collaborate through a shared blackboard using stigmergic coordination (like ant colonies). 
+→ Security Analyst: Maps the attack surface
+→ Vulnerability Isolator: Classifies findings
+→ Zero-Day Hunter: Performs deep heap/vtable analysis
+→ Harness Engineer: Compiles proof-of-concept exploits
+→ Council Orchestrator: Coordinates everything autonomously
+
+Key Capabilities:
+• Automated binary mapping & program structure analysis
+• Vulnerability discovery & classification
+• Exploitability assessment with evidence-backed findings
+• PoC harness generation & crash reproduction
+• Real-time operator console with full visibility
+
+What Makes VRAX Different:
+✦ Fully autonomous — no constant prompting needed
+✦ Evidence over speculation — every finding includes hex addresses and byte-level proof
+✦ Human-in-the-loop only where it matters (binary patching, 0-day reporting)
+✦ Integrates with IDA Pro, Ghidra, and Binary Ninja via MCP
+
+Built With: TypeScript · Python · Bun · SolidJS · Electron · Multi-Agent AI
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VRAX is open source and available on GitHub:
+https://github.com/ChathurangaBW/Vrax
+
+If you're working in vulnerability research, binary analysis, or security automation — I'd love to hear your thoughts! Star the repo ⭐ if you find it interesting.
+
+#CyberSecurity #ReverseEngineering #BinaryAnalysis #VulnerabilityResearch #AgenticAI #OpenSource #VRAX
