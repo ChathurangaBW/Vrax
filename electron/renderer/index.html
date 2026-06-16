@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -369,13 +369,13 @@
 
       <!-- RIGHT: live swarm panel -->
       <div id="live-swarm" style="width:220px;flex-shrink:0;border-left:1px solid #1a2535;display:flex;flex-direction:column;overflow:hidden;">
-        <div style="padding:10px 12px 6px;font-size:9px;letter-spacing:1.5px;color:#4B5563;text-transform:uppercase;border-bottom:1px solid #1a2535;">Swarm Status</div>
+        <div style="padding:10px 12px 6px;font-size:9px;letter-spacing:1.5px;color:#4B5563;text-transform:uppercase;border-bottom:1px solid #1a2535;display:flex;justify-content:space-between;"><span>Swarm Status</span><span style="color:#1E3A5F;">phi</span></div>
         <div style="flex:1;overflow-y:auto;padding:6px 10px;">
-          <div class="lsw-row" id="lsw-co"><div class="lsw-dot" id="lsd-co"></div><div class="lsw-info"><div class="lsw-name">council-orchestrator</div><div class="lsw-task" id="lst-co">initializing</div></div><div class="lsw-phi" id="lsp-co">φ 1.00</div></div>
-          <div class="lsw-row" id="lsw-an"><div class="lsw-dot" id="lsd-an"></div><div class="lsw-info"><div class="lsw-name">security-analyst</div><div class="lsw-task" id="lst-an">idle</div></div><div class="lsw-phi" id="lsp-an">φ 0.00</div></div>
-          <div class="lsw-row" id="lsw-vi"><div class="lsw-dot" id="lsd-vi"></div><div class="lsw-info"><div class="lsw-name">vuln-isolator</div><div class="lsw-task" id="lst-vi">idle</div></div><div class="lsw-phi" id="lsp-vi">φ 0.00</div></div>
-          <div class="lsw-row" id="lsw-zh"><div class="lsw-dot" id="lsd-zh"></div><div class="lsw-info"><div class="lsw-name">zero-day-hunter</div><div class="lsw-task" id="lst-zh">idle</div></div><div class="lsw-phi" id="lsp-zh">φ 0.00</div></div>
-          <div class="lsw-row" id="lsw-he"><div class="lsw-dot" id="lsd-he"></div><div class="lsw-info"><div class="lsw-name">harness-engineer</div><div class="lsw-task" id="lst-he">queued</div></div><div class="lsw-phi" id="lsp-he">φ 0.00</div></div>
+          <div class="lsw-row" id="lsw-co"><div class="lsw-dot" id="lsd-co"></div><div class="lsw-info"><div class="lsw-name">council-orchestrator</div><div class="lsw-task" id="lst-co">initializing</div></div><div class="lsw-phi" id="lsp-co">1.00</div></div>
+          <div class="lsw-row" id="lsw-an"><div class="lsw-dot" id="lsd-an"></div><div class="lsw-info"><div class="lsw-name">security-analyst</div><div class="lsw-task" id="lst-an">idle</div></div><div class="lsw-phi" id="lsp-an">0.00</div></div>
+          <div class="lsw-row" id="lsw-vi"><div class="lsw-dot" id="lsd-vi"></div><div class="lsw-info"><div class="lsw-name">vuln-isolator</div><div class="lsw-task" id="lst-vi">idle</div></div><div class="lsw-phi" id="lsp-vi">0.00</div></div>
+          <div class="lsw-row" id="lsw-zh"><div class="lsw-dot" id="lsd-zh"></div><div class="lsw-info"><div class="lsw-name">zero-day-hunter</div><div class="lsw-task" id="lst-zh">idle</div></div><div class="lsw-phi" id="lsp-zh">0.00</div></div>
+          <div class="lsw-row" id="lsw-he"><div class="lsw-dot" id="lsd-he"></div><div class="lsw-info"><div class="lsw-name">harness-engineer</div><div class="lsw-task" id="lst-he">queued</div></div><div class="lsw-phi" id="lsp-he">0.00</div></div>
         </div>
         <div style="padding:8px 10px 6px;font-size:9px;letter-spacing:1.5px;color:#4B5563;text-transform:uppercase;border-top:1px solid #1a2535;border-bottom:1px solid #1a2535;">Iteration</div>
         <div style="padding:8px 12px;font-size:11px;font-family:var(--mono);">
@@ -809,7 +809,7 @@
     const row=document.getElementById('lsw-'+id);
     if(dot){dot.className='lsw-dot '+(dotCls||'idle');}
     if(tsk){tsk.textContent=task||'idle';tsk.className='lsw-task '+(taskCls||'');}
-    if(phiEl){phiEl.textContent='φ '+(phi||'0.00');phiEl.className='lsw-phi '+(phiCls||'');}
+    if(phiEl){phiEl.textContent=(phi||'0.00');phiEl.className='lsw-phi '+(phiCls||'');}
     if(row&&dotCls==='run') row.style.background='#0D1B2E';
     else if(row&&dotCls==='crit') row.style.background='#1A0D0D';
     else if(row&&dotCls==='done') row.style.background='#0A1F10';
@@ -887,31 +887,31 @@
 
     navigate('blackboard');
 
-    S(300,  ()=>{ ag('co','run','loading binary ctx','run','1.00','active'); log('co','council','VRAX council init — binary: netcfgd.exe (PE32 x86 184KB)',''); });
+    S(300,  ()=>{ ag('co','run','loading binary context','run','1.00','active'); log('co','council','VRAX council init | binary: netcfgd.exe (PE32 x86 184KB)',''); });
     S(950,  ()=>{ log('co','council','IDA Pro MCP CONNECTED · funcs:247 · imports:21 · ASLR=off DEP=off CFG=off','ok'); setIter(1,'scanning','#4F7CFF'); });
-    S(1600, ()=>{ ag('an','run','phase 1 — surface scan','run','0.00',''); log('co','council','→ dispatching security-analyst: attack surface phase 1',''); });
+    S(1600, ()=>{ ag('an','run','phase 1: surface scan','run','0.00',''); log('co','council','>> dispatching security-analyst: attack surface phase 1',''); });
     S(2500, ()=>{ log('an','analyst','ida_pro_mcp::list_funcs limit=247 · imports · get_binary_security',''); });
-    S(3300, ()=>{ log('an','analyst','xrefs_to ParseConfigFrame → 14 callers · NO auth gate before entry · pre-auth confirmed','warn'); });
-    S(4000, ()=>{ ag('an','run','depositing φ=0.78','run','0.78','active'); log('an','analyst','ATTACK_SURFACE_FOUND φ=0.78 → depositing to blackboard','warn'); });
+    S(3300, ()=>{ log('an','analyst','xrefs_to ParseConfigFrame: 14 callers · NO auth gate before entry · pre-auth confirmed','warn'); });
+    S(4000, ()=>{ ag('an','run','depositing 0.78','run','0.78','active'); log('an','analyst','ATTACK_SURFACE_FOUND phi=0.78 depositing to blackboard','warn'); });
     S(4700, ()=>{
       addF('high','HIGH','ATTACK_SURFACE_FOUND','security-analyst','0.78','h','4 pre-auth parser lanes: ParseConfigFrame · ReadNetBlock · HandlePacketData · ValidateMsgHeader — all reachable without auth');
       log('an','analyst','ReadNetBlock+0x38: block_len+16 unchecked — integer wrap candidate EAX=0xFFFFFFF0+0x10=0','warn');
     });
     S(6000, ()=>{
-      ag('an','done','complete φ=0.78','done','0.78','');
+      ag('an','done','phase 1 done','done','0.78','');
       addF('high','HIGH','INTEGER_OVERFLOW','security-analyst','0.74','h','ReadNetBlock+0x38: block_len+16 wraps to 0 on x86 (block_len=0xFFFFFFF0) — downstream memcpy receives 0 as count, controlled via network packet');
-      log('co','council','HIGH×2 detected · pheromone boost applied · dispatching vuln-isolator','warn');
+      log('co','council','HIGH x2 detected · pheromone boost applied · dispatching vuln-isolator','warn');
       ag('vi','run','classifying vulns','run','0.00',''); setIter(2,'classifying','#4F7CFF');
     });
-    S(7400, ()=>{ log('vi','isolator','ida_pro_mcp::decompile 0x00406B90 LogDiagEvent → sprintf(buf, attacker_str) — format guard ABSENT',''); });
+    S(7400, ()=>{ log('vi','isolator','ida_pro_mcp::decompile 0x00406B90 LogDiagEvent: sprintf(buf, attacker_str) — format guard ABSENT',''); });
     S(8200, ()=>{
       addF('med','MED','FORMAT_STRING_BUG','vuln-isolator','0.62','m','LogDiagEvent+0x24: sprintf(buf, attacker_controlled_str) — no format string guard — %n write-what-where primitive confirmed');
-      log('vi','isolator','stack_frame ParseConfigFrame → char dest[512] on stack · tracing memcpy srclen path...','');
+      log('vi','isolator','stack_frame ParseConfigFrame: char dest[512] on stack · tracing memcpy srclen path...','');
     });
     S(9400, ()=>{ log('vi','isolator','memcpy(dest[512], src, srclen=attacker) · srclen up to 0xFFFF · NO bounds check · ret=0x41414141','crit'); });
     S(10200, ()=>{
       addF('crit','CRIT','STACK_BUFFER_OVERFLOW','vuln-isolator','0.95','c','ParseConfigFrame+0x21C: memcpy into 512B stack buffer, srclen=0xFFFF — no bounds check — return address overwrite at dest+520, SEH chain corrupted');
-      ag('vi','crit','CRIT φ=0.95','crit','0.95','crit');
+      ag('vi','crit','CRIT confirmed','crit','0.95','crit');
       ag('co','crit','ESCALATION','crit','1.00','crit');
       log('co','council','CRITICAL · dispatching zero-day-hunter → heap spray + vtbl analysis','crit');
       ag('zh','run','heap + UAF analysis','run','0.00',''); setIter(3,'CRITICAL — escalating','#FF4444');
@@ -919,16 +919,16 @@
     S(11600, ()=>{ log('zh','zero-day-hunter','get_bytes ReadNetBlock+0x60 · HeapFree called · FLINK NOT sanitized · tcache poison viable',''); });
     S(12500, ()=>{
       addF('crit','CRIT','HEAP_OVERFLOW','zero-day-hunter','0.91','c','ReadNetBlock+0x60: chunk FLINK/BLINK overwrite via integer overflow — tcache poisoning on MSVCRT heap — arbitrary 4-byte write primitive confirmed');
-      log('zh','zero-day-hunter','xrefs_to CSessionCtx::~CSessionCtx → [g_session] ptr NOT zeroed post-free — UAF candidate','crit');
+      log('zh','zero-day-hunter','xrefs_to CSessionCtx: g_session ptr NOT zeroed post-free — UAF candidate','crit');
     });
     S(14000, ()=>{
       addF('crit','CRIT','USE_AFTER_FREE','zero-day-hunter','0.88','c','CSessionCtx::Dispatch+0x88: [EAX+0x4] vtbl call on freed object — tcache heap spray (8-byte slots) reallocates with controlled bytes — vtbl hijack → EIP=controlled');
-      ag('zh','crit','CRIT×2 φ=0.91','crit','0.91','crit');
-      log('co','council','!!! 3× CRITICAL confirmed · BOF→HEAP→UAF exploit chain · dispatching harness-engineer !!!','crit');
+      ag('zh','crit','2x CRIT found','crit','0.91','crit');
+      log('co','council','!!! 3x CRITICAL confirmed · BOF+HEAP+UAF exploit chain · dispatching harness-engineer !!!','crit');
       ag('he','run','building PoC harness','run','0.00',''); setIter(4,'PoC building','#F59E0B');
     });
     S(15600, ()=>{ log('he','harness','gcc harness.c -o poc.exe -lkernel32 -luser32 · compiling crash reproducer...',''); });
-    S(16800, ()=>{ log('he','harness','run 1/3: CRASH @ EIP=0x41414141 EBP=0x42424242 · run 2/3: CRASH · run 3/3: CRASH — 3/3 ✓','ok'); });
+    S(16800, ()=>{ log('he','harness','run 1/3: CRASH @ EIP=0x41414141 EBP=0x42424242 · run 2/3: CRASH · run 3/3: CRASH — 3/3 PASS','ok'); });
     S(17800, ()=>{
       ag('he','done','PoC 3/3 confirmed','done','0.95','');
       ag('co','done','analysis complete','done','1.00','');
