@@ -42,3 +42,5 @@ __pycache__/
 agents/_analysis/
 
 .opencode/
+
+gif_frames/

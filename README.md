@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/screenshots/page-blackboard.png" alt="VRAX — Autonomous RE AI Swarm" width="800">
+  <img src="docs/screenshots/vrax-demo.gif" alt="VRAX — Autonomous RE AI Swarm live demo" width="900">
 </p>
 
 <h1 align="center">VRAX</h1>

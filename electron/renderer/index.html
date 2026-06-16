@@ -102,21 +102,23 @@
   <div class="ws">
 
     <!-- BLACKBOARD (default) -->
-    <div class="page active" id="page-blackboard">
+    <div class="page active" id="page-blackboard" style="display:flex;flex-direction:column;">
       <div class="pg-hdr">
         <span class="pg-title">Blackboard</span>
-        <span class="pg-sub">&middot; 6 findings</span>
+        <span class="pg-sub" id="bb-sub">&middot; 6 findings</span>
         <span class="pg-ts">2026-06-13 10:43:45 UTC</span>
       </div>
       <div class="filter-row">
         <div class="fchip sel">ALL</div>
-        <div class="fchip" onclick="filterBB(this,'crit')">CRITICAL <span class="badge-cnt">3</span></div>
-        <div class="fchip" onclick="filterBB(this,'high')">HIGH <span class="badge-cnt">2</span></div>
+        <div class="fchip" onclick="filterBB(this,'crit')">CRITICAL <span class="badge-cnt" id="cnt-crit">3</span></div>
+        <div class="fchip" onclick="filterBB(this,'high')">HIGH <span class="badge-cnt" id="cnt-high">2</span></div>
         <div class="fchip">MEDIUM <span class="badge-cnt">1</span></div>
         <div class="fchip">LOW</div>
         <div class="fchip">INFO</div>
       </div>
-      <div class="flist" id="bb-list">
+      <!-- split: findings + swarm panel -->
+      <div style="display:flex;flex:1;min-height:0;overflow:hidden;">
+      <div class="flist" id="bb-list" style="flex:1;min-width:0;padding-right:8px;">
 
         <!-- Finding 1: STACK_BUFFER_OVERFLOW -->
         <div class="fc fc-crit" id="fc-1">
@@ -364,6 +366,37 @@
         </div>
 
       </div><!-- /flist -->
+
+      <!-- RIGHT: live swarm panel -->
+      <div id="live-swarm" style="width:220px;flex-shrink:0;border-left:1px solid #1a2535;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="padding:10px 12px 6px;font-size:9px;letter-spacing:1.5px;color:#4B5563;text-transform:uppercase;border-bottom:1px solid #1a2535;">Swarm Status</div>
+        <div style="flex:1;overflow-y:auto;padding:6px 10px;">
+          <div class="lsw-row" id="lsw-co"><div class="lsw-dot" id="lsd-co"></div><div class="lsw-info"><div class="lsw-name">council-orchestrator</div><div class="lsw-task" id="lst-co">initializing</div></div><div class="lsw-phi" id="lsp-co">φ 1.00</div></div>
+          <div class="lsw-row" id="lsw-an"><div class="lsw-dot" id="lsd-an"></div><div class="lsw-info"><div class="lsw-name">security-analyst</div><div class="lsw-task" id="lst-an">idle</div></div><div class="lsw-phi" id="lsp-an">φ 0.00</div></div>
+          <div class="lsw-row" id="lsw-vi"><div class="lsw-dot" id="lsd-vi"></div><div class="lsw-info"><div class="lsw-name">vuln-isolator</div><div class="lsw-task" id="lst-vi">idle</div></div><div class="lsw-phi" id="lsp-vi">φ 0.00</div></div>
+          <div class="lsw-row" id="lsw-zh"><div class="lsw-dot" id="lsd-zh"></div><div class="lsw-info"><div class="lsw-name">zero-day-hunter</div><div class="lsw-task" id="lst-zh">idle</div></div><div class="lsw-phi" id="lsp-zh">φ 0.00</div></div>
+          <div class="lsw-row" id="lsw-he"><div class="lsw-dot" id="lsd-he"></div><div class="lsw-info"><div class="lsw-name">harness-engineer</div><div class="lsw-task" id="lst-he">queued</div></div><div class="lsw-phi" id="lsp-he">φ 0.00</div></div>
+        </div>
+        <div style="padding:8px 10px 6px;font-size:9px;letter-spacing:1.5px;color:#4B5563;text-transform:uppercase;border-top:1px solid #1a2535;border-bottom:1px solid #1a2535;">Iteration</div>
+        <div style="padding:8px 12px;font-size:11px;font-family:var(--mono);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#4B5563;">iter</span><span id="live-iter" style="color:var(--accent);">0</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#4B5563;">decay</span><span id="live-decay" style="color:#6B7280;">5% / iter</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:#4B5563;">status</span><span id="live-status" style="color:#4F7CFF;">scanning</span></div>
+        </div>
+      </div>
+
+      </div><!-- /split -->
+
+      <!-- BOTTOM: live console -->
+      <div id="live-console" style="height:108px;border-top:1px solid #1a2535;background:#090B0F;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;">
+        <div style="padding:4px 14px 2px;font-size:9px;letter-spacing:1.5px;color:#4B5563;text-transform:uppercase;border-bottom:1px solid #111820;display:flex;align-items:center;gap:8px;">
+          <span>Agent Console</span>
+          <span id="console-blink" style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>
+          <span id="console-label" style="color:#22C55E;font-size:9px;">LIVE</span>
+        </div>
+        <div id="console-feed" style="flex:1;overflow:hidden;padding:5px 14px;font-family:var(--mono);font-size:10.5px;line-height:1.75;"></div>
+      </div>
+
     </div><!-- /blackboard -->
 
     <!-- EVIDENCE -->
@@ -721,5 +754,209 @@
 </div>
 
 <script src="app.js"></script>
+<style>
+@keyframes fc-slide-in {
+  from { opacity:0; transform:translateX(24px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes dot-pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.fc-demo-new { animation: fc-slide-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* swarm panel rows */
+.lsw-row { display:flex; align-items:center; gap:8px; padding:7px 4px; border-bottom:1px solid #111820; }
+.lsw-row:last-child { border-bottom:none; }
+.lsw-dot { width:7px; height:7px; border-radius:50%; background:#1E2D40; flex-shrink:0; transition:all 0.4s; }
+.lsw-dot.idle { background:#1E2D40; }
+.lsw-dot.run  { background:var(--accent); box-shadow:0 0 7px rgba(79,124,255,0.8); animation:dot-pulse 1.1s infinite; }
+.lsw-dot.done { background:var(--green); box-shadow:none; animation:none; }
+.lsw-dot.crit { background:var(--red); box-shadow:0 0 8px rgba(255,68,68,0.9); animation:dot-pulse 0.6s infinite; }
+.lsw-info { flex:1; min-width:0; }
+.lsw-name { font-size:10px; font-family:var(--mono); color:#94A3B8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lsw-task { font-size:9px; color:#374151; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lsw-task.run  { color:var(--accent); }
+.lsw-task.done { color:var(--green); }
+.lsw-task.crit { color:var(--red); }
+.lsw-phi { font-size:9px; font-family:var(--mono); color:#4B5563; flex-shrink:0; }
+.lsw-phi.active { color:var(--accent); }
+.lsw-phi.crit   { color:var(--red); }
+
+/* console feed lines */
+.cf-line { display:flex; gap:7px; animation:fc-slide-in 0.2s ease; }
+.cf-t  { color:#374151; flex-shrink:0; font-size:10px; }
+.cf-ag { flex-shrink:0; font-weight:700; font-size:10px; }
+.cf-ag.co { color:#4F7CFF; }
+.cf-ag.an { color:#06B6D4; }
+.cf-ag.vi { color:#A78BFA; }
+.cf-ag.zh { color:#F59E0B; }
+.cf-ag.he { color:#22C55E; }
+.cf-msg { color:#6B7280; font-size:10px; }
+.cf-msg.ok   { color:#22C55E; }
+.cf-msg.warn { color:#F59E0B; }
+.cf-msg.crit { color:#FF4444; font-weight:700; }
+#console-blink { animation: dot-pulse 1.2s infinite; }
+</style>
+<script>
+(function(){
+  const S=(ms,fn)=>setTimeout(fn,ms);
+  const t0=Date.now();
+  function ts(){const d=Date.now()-t0,s=Math.floor(d/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+
+  // ── agent panel helpers ──────────────────────────────────────
+  function ag(id, dotCls, task, taskCls, phi, phiCls){
+    const dot=document.getElementById('lsd-'+id);
+    const tsk=document.getElementById('lst-'+id);
+    const phiEl=document.getElementById('lsp-'+id);
+    const row=document.getElementById('lsw-'+id);
+    if(dot){dot.className='lsw-dot '+(dotCls||'idle');}
+    if(tsk){tsk.textContent=task||'idle';tsk.className='lsw-task '+(taskCls||'');}
+    if(phiEl){phiEl.textContent='φ '+(phi||'0.00');phiEl.className='lsw-phi '+(phiCls||'');}
+    if(row&&dotCls==='run') row.style.background='#0D1B2E';
+    else if(row&&dotCls==='crit') row.style.background='#1A0D0D';
+    else if(row&&dotCls==='done') row.style.background='#0A1F10';
+    else if(row) row.style.background='';
+  }
+
+  function setIter(n,status,statusColor){
+    const el=document.getElementById('live-iter');
+    const dec=document.getElementById('live-decay');
+    const st=document.getElementById('live-status');
+    if(el)el.textContent=n;
+    if(dec)dec.textContent=(n*5)+'% accumulated';
+    if(st){st.textContent=status||'scanning';st.style.color=statusColor||'#4F7CFF';}
+  }
+
+  // ── console feed ─────────────────────────────────────────────
+  const feed=document.getElementById('console-feed');
+  const feedLines=[];
+  function log(agCls,agName,msg,msgCls){
+    if(!feed)return;
+    const d=document.createElement('div');
+    d.className='cf-line';
+    d.innerHTML=`<span class="cf-t">${ts()}</span><span class="cf-ag ${agCls}">[${agName}]</span><span class="cf-msg ${msgCls||''}">${msg}</span>`;
+    feed.appendChild(d);
+    feedLines.push(d);
+    if(feedLines.length>4){feedLines[0].remove();feedLines.shift();}
+  }
+
+  // ── blackboard ───────────────────────────────────────────────
+  const bbList=document.getElementById('bb-list');
+  let fCount=0,critCount=0,highCount=0;
+  function addF(sev,sevL,name,agName,phi,phiC,desc){
+    fCount++;
+    if(sev==='crit')critCount++;
+    if(sev==='high')highCount++;
+    const d=document.createElement('div');
+    d.className=`fc fc-${sev} fc-demo-new`;
+    d.innerHTML=`
+      <div class="fc-top">
+        <div class="fc-row1">
+          <span class="sev sev-${sev[0]}">${sevL}</span>
+          <span class="fname">${name}</span>
+          <span class="conf">CONFIRMED</span>
+        </div>
+        <div class="fdesc">${desc}</div>
+        <div class="fmeta">
+          <div class="phi"><div class="phi-bar phi-bar-${phiC}" style="width:100%"></div><span class="phi-val">${phi}</span></div>
+          <span class="dot-sep">&middot;</span><span class="f-agent">${agName}</span>
+          <span class="dot-sep">&middot;</span><span class="f-time">&lt;1m ago</span>
+        </div>
+      </div>
+      <div class="fc-foot"><span class="f-agents">live</span><span class="f-expand">&#9660; expand</span></div>`;
+    bbList.prepend(d);
+    const sub=document.getElementById('bb-sub');
+    if(sub)sub.textContent=`· ${fCount} finding${fCount!==1?'s':''}`;
+    const cc=document.getElementById('cnt-crit');
+    const hc=document.getElementById('cnt-high');
+    if(cc)cc.textContent=critCount;
+    if(hc)hc.textContent=highCount;
+  }
+
+  // ── main loop ────────────────────────────────────────────────
+  function runDemo(){
+    fCount=0;critCount=0;highCount=0;
+    document.querySelectorAll('.fc-demo-new').forEach(e=>e.remove());
+    const orig=[...bbList.children];
+    orig.forEach(f=>f.style.display='none');
+    const sub=document.getElementById('bb-sub');
+    if(sub)sub.textContent='· 0 findings';
+    const cc=document.getElementById('cnt-crit');const hc=document.getElementById('cnt-high');
+    if(cc)cc.textContent=0;if(hc)hc.textContent=0;
+    ['co','an','vi','zh','he'].forEach(id=>ag(id,'idle','idle','','0.00',''));
+    if(feed)feed.innerHTML='';feedLines.length=0;
+    setIter(0,'initializing','#4B5563');
+
+    navigate('blackboard');
+
+    S(300,  ()=>{ ag('co','run','loading binary ctx','run','1.00','active'); log('co','council','VRAX council init — binary: netcfgd.exe (PE32 x86 184KB)',''); });
+    S(950,  ()=>{ log('co','council','IDA Pro MCP CONNECTED · funcs:247 · imports:21 · ASLR=off DEP=off CFG=off','ok'); setIter(1,'scanning','#4F7CFF'); });
+    S(1600, ()=>{ ag('an','run','phase 1 — surface scan','run','0.00',''); log('co','council','→ dispatching security-analyst: attack surface phase 1',''); });
+    S(2500, ()=>{ log('an','analyst','ida_pro_mcp::list_funcs limit=247 · imports · get_binary_security',''); });
+    S(3300, ()=>{ log('an','analyst','xrefs_to ParseConfigFrame → 14 callers · NO auth gate before entry · pre-auth confirmed','warn'); });
+    S(4000, ()=>{ ag('an','run','depositing φ=0.78','run','0.78','active'); log('an','analyst','ATTACK_SURFACE_FOUND φ=0.78 → depositing to blackboard','warn'); });
+    S(4700, ()=>{
+      addF('high','HIGH','ATTACK_SURFACE_FOUND','security-analyst','0.78','h','4 pre-auth parser lanes: ParseConfigFrame · ReadNetBlock · HandlePacketData · ValidateMsgHeader — all reachable without auth');
+      log('an','analyst','ReadNetBlock+0x38: block_len+16 unchecked — integer wrap candidate EAX=0xFFFFFFF0+0x10=0','warn');
+    });
+    S(6000, ()=>{
+      ag('an','done','complete φ=0.78','done','0.78','');
+      addF('high','HIGH','INTEGER_OVERFLOW','security-analyst','0.74','h','ReadNetBlock+0x38: block_len+16 wraps to 0 on x86 (block_len=0xFFFFFFF0) — downstream memcpy receives 0 as count, controlled via network packet');
+      log('co','council','HIGH×2 detected · pheromone boost applied · dispatching vuln-isolator','warn');
+      ag('vi','run','classifying vulns','run','0.00',''); setIter(2,'classifying','#4F7CFF');
+    });
+    S(7400, ()=>{ log('vi','isolator','ida_pro_mcp::decompile 0x00406B90 LogDiagEvent → sprintf(buf, attacker_str) — format guard ABSENT',''); });
+    S(8200, ()=>{
+      addF('med','MED','FORMAT_STRING_BUG','vuln-isolator','0.62','m','LogDiagEvent+0x24: sprintf(buf, attacker_controlled_str) — no format string guard — %n write-what-where primitive confirmed');
+      log('vi','isolator','stack_frame ParseConfigFrame → char dest[512] on stack · tracing memcpy srclen path...','');
+    });
+    S(9400, ()=>{ log('vi','isolator','memcpy(dest[512], src, srclen=attacker) · srclen up to 0xFFFF · NO bounds check · ret=0x41414141','crit'); });
+    S(10200, ()=>{
+      addF('crit','CRIT','STACK_BUFFER_OVERFLOW','vuln-isolator','0.95','c','ParseConfigFrame+0x21C: memcpy into 512B stack buffer, srclen=0xFFFF — no bounds check — return address overwrite at dest+520, SEH chain corrupted');
+      ag('vi','crit','CRIT φ=0.95','crit','0.95','crit');
+      ag('co','crit','ESCALATION','crit','1.00','crit');
+      log('co','council','CRITICAL · dispatching zero-day-hunter → heap spray + vtbl analysis','crit');
+      ag('zh','run','heap + UAF analysis','run','0.00',''); setIter(3,'CRITICAL — escalating','#FF4444');
+    });
+    S(11600, ()=>{ log('zh','zero-day-hunter','get_bytes ReadNetBlock+0x60 · HeapFree called · FLINK NOT sanitized · tcache poison viable',''); });
+    S(12500, ()=>{
+      addF('crit','CRIT','HEAP_OVERFLOW','zero-day-hunter','0.91','c','ReadNetBlock+0x60: chunk FLINK/BLINK overwrite via integer overflow — tcache poisoning on MSVCRT heap — arbitrary 4-byte write primitive confirmed');
+      log('zh','zero-day-hunter','xrefs_to CSessionCtx::~CSessionCtx → [g_session] ptr NOT zeroed post-free — UAF candidate','crit');
+    });
+    S(14000, ()=>{
+      addF('crit','CRIT','USE_AFTER_FREE','zero-day-hunter','0.88','c','CSessionCtx::Dispatch+0x88: [EAX+0x4] vtbl call on freed object — tcache heap spray (8-byte slots) reallocates with controlled bytes — vtbl hijack → EIP=controlled');
+      ag('zh','crit','CRIT×2 φ=0.91','crit','0.91','crit');
+      log('co','council','!!! 3× CRITICAL confirmed · BOF→HEAP→UAF exploit chain · dispatching harness-engineer !!!','crit');
+      ag('he','run','building PoC harness','run','0.00',''); setIter(4,'PoC building','#F59E0B');
+    });
+    S(15600, ()=>{ log('he','harness','gcc harness.c -o poc.exe -lkernel32 -luser32 · compiling crash reproducer...',''); });
+    S(16800, ()=>{ log('he','harness','run 1/3: CRASH @ EIP=0x41414141 EBP=0x42424242 · run 2/3: CRASH · run 3/3: CRASH — 3/3 ✓','ok'); });
+    S(17800, ()=>{
+      ag('he','done','PoC 3/3 confirmed','done','0.95','');
+      ag('co','done','analysis complete','done','1.00','');
+      ag('zh','done','complete','done','0.91','');
+      ag('vi','done','complete','done','0.95','');
+      ag('an','done','complete','done','0.78','');
+      setIter(4,'COMPLETE — report ready','#22C55E');
+      log('co','council','analysis complete · 6 findings · 3 CRIT 2 HIGH 1 MED · PoC confirmed · report ready','ok');
+      const blink=document.getElementById('console-blink');
+      const lbl=document.getElementById('console-label');
+      if(blink)blink.style.background='var(--green)';
+      if(lbl){lbl.textContent='COMPLETE';lbl.style.color='var(--green)';}
+    });
+
+    S(21000, ()=>{
+      document.querySelectorAll('.fc-demo-new').forEach(e=>e.remove());
+      orig.forEach(f=>f.style.display='');
+      if(sub)sub.textContent='· 6 findings';
+      const blink=document.getElementById('console-blink');
+      const lbl=document.getElementById('console-label');
+      if(blink){blink.style.background='var(--green)';blink.style.animation='dot-pulse 1.2s infinite';}
+      if(lbl){lbl.textContent='LIVE';lbl.style.color='var(--green)';}
+      runDemo();
+    });
+  }
+
+  setTimeout(runDemo, 700);
+})();
+</script>
 </body>
 </html>
