@@ -1,4 +1,4 @@
-name: publish-github-action
+﻿name: publish-github-action
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Publish
         run: |
-          git config --global user.email "opencode@sst.dev"
-          git config --global user.name "opencode"
+          git config --global user.email "vrax@sst.dev"
+          git config --global user.name "vrax"
           ./script/publish
         working-directory: ./github

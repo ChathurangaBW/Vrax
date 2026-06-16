@@ -1,4 +1,4 @@
-name: generate
+﻿name: generate
 
 on:
   push:
@@ -22,8 +22,8 @@ jobs:
         id: committer
         uses: ./.github/actions/setup-git-committer
         with:
-          opencode-app-id: ${{ vars.OPENCODE_APP_ID }}
-          opencode-app-secret: ${{ secrets.OPENCODE_APP_SECRET }}
+          vrax-app-id: ${{ vars.vrax_APP_ID }}
+          vrax-app-secret: ${{ secrets.vrax_APP_SECRET }}
 
       - name: Generate
         run: ./script/generate.ts

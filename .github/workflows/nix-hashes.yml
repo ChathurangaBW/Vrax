@@ -1,4 +1,4 @@
-name: nix-hashes
+﻿name: nix-hashes
 
 permissions:
   contents: write
@@ -104,8 +104,8 @@ jobs:
       - name: Setup git committer
         uses: ./.github/actions/setup-git-committer
         with:
-          opencode-app-id: ${{ vars.OPENCODE_APP_ID }}
-          opencode-app-secret: ${{ secrets.OPENCODE_APP_SECRET }}
+          vrax-app-id: ${{ vars.vrax_APP_ID }}
+          vrax-app-secret: ${{ secrets.vrax_APP_SECRET }}
 
       - name: Pull latest changes
         run: |
