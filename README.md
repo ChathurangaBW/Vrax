@@ -1,5 +1,5 @@
 ﻿<p align="center">
-  <img src="assets/logo-dark.svg" width="480" alt="VRAX — Autonomous Reverse Engineering AI Swarm"/>
+  <img src="assets/logo-wide.svg" width="360" alt="VRAX — Autonomous Reverse Engineering AI Swarm"/>
 </p>
 
 <p align="center">
