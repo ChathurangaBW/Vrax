@@ -1,0 +1,24 @@
+{
+  "version": "2026-05",
+  "uacme_active_id_range": { "min": 43, "max": 82, "expected_count": 40 },
+  "attack_surfaces": [
+    "registry_file_handler",
+    "auto_elevate_lolbin",
+    "scheduled_task_environment",
+    "com_elevation",
+    "dll_hijack",
+    "token_manipulation",
+    "appinfo_rpc_alpc",
+    "installer_wusa_shell",
+    "gui_uipi"
+  ],
+  "non_uacme_minimum": 5,
+  "coverage_dimensions": [
+    "catalog",
+    "taxonomy",
+    "evidence",
+    "ida",
+    "defense",
+    "validation"
+  ]
+}

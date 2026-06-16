@@ -1,0 +1,13 @@
+{
+  "verdict": "FAIL",
+  "timestamp": "2026-05-19T10:49:13.608458+00:00",
+  "errors": [
+    "Missing uac_master_list.json"
+  ],
+  "gates": {
+    "schema": false,
+    "completeness": false,
+    "evidence": false,
+    "tooling": false
+  }
+}

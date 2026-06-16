@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VRAX UI Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --chrome:     #0A0C10;
+    --workspace:  #0D1117;
+    --panel:      #111722;
+    --card:       #172030;
+    --card2:      #1C2A3A;
+    --border:     rgba(255,255,255,0.06);
+    --border2:    rgba(255,255,255,0.10);
+    --accent:     #4F7CFF;
+    --accent-dim: rgba(79,124,255,0.15);
+    --text-1:     #D1D9E3;
+    --text-2:     rgba(255,255,255,0.55);
+    --text-3:     rgba(255,255,255,0.28);
+    --text-4:     rgba(255,255,255,0.14);
+    --green:      #22C55E;
+    --amber:      #F59E0B;
+    --red:        #EF4444;
+    --mono:       'JetBrains Mono', monospace;
+    --sans:       'Inter', system-ui, sans-serif;
+  }
+
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--chrome); font-family: var(--sans); color: var(--text-1); font-size: 13px; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+
+  /* ─── TITLEBAR ─────────────────────────────────────────────────── */
+  .titlebar {
+    height: 32px;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+    flex-shrink: 0;
+    -webkit-app-region: drag;
+  }
+  .titlebar-dots { display: flex; gap: 6px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FFBD2E; }
+  .dot-g { background: #28C840; }
+  .titlebar-title { flex: 1; text-align: center; font-size: 11px; color: var(--text-4); letter-spacing: 0.06em; font-family: var(--mono); }
+
+  /* ─── TOPBAR ────────────────────────────────────────────────────── */
+  .topbar {
+    height: 40px;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 8px;
+    margin-right: 20px;
+  }
+  .brand-triangle {
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid var(--accent);
+  }
+  .brand-name {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.12em;
+    color: #fff; font-family: var(--mono);
+  }
+  .topbar-sep { width: 1px; height: 18px; background: var(--border2); margin: 0 16px; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .breadcrumb-file { font-size: 12px; font-weight: 500; color: var(--text-1); font-family: var(--mono); }
+  .breadcrumb-dot { color: var(--text-4); }
+  .breadcrumb-meta { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
+  .phase-pill {
+    background: rgba(79,124,255,0.12);
+    border: 1px solid rgba(79,124,255,0.30);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.10em;
+    color: var(--accent); font-family: var(--mono);
+    text-transform: uppercase;
+  }
+  .phase-pill.running { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25); color: var(--green); }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .icon-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border2); background: transparent; display: flex; align-items: center; justify-content: center; color: var(--text-3); font-size: 13px; cursor: pointer; }
+
+  /* ─── LAYOUT ────────────────────────────────────────────────────── */
+  .app { display: flex; flex-direction: column; height: 900px; }
+  .workbench { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+
+  /* ─── LEFT NAV ──────────────────────────────────────────────────── */
+  .leftnav {
+    width: 180px;
+    flex-shrink: 0;
+    background: var(--chrome);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 8px 0 12px;
+  }
+  .nav-section-header {
+    padding: 12px 14px 4px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--text-4);
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 14px;
+    height: 28px;
+    font-size: 12px;
+    color: var(--text-3);
+    cursor: pointer;
+    position: relative;
+    transition: background 100ms, color 100ms;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text-2); }
+  .nav-item.active {
+    background: rgba(79,124,255,0.10);
+    color: #fff;
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+  }
+  .nav-icon { font-size: 11px; width: 14px; text-align: center; flex-shrink: 0; }
+
+  /* ─── WORKSPACE ─────────────────────────────────────────────────── */
+  .workspace {
+    flex: 1; min-width: 0;
+    background: var(--workspace);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ─── PIPELINE PAGE ─────────────────────────────────────────────── */
+  .page-header {
+    padding: 20px 24px 0;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .page-title { font-size: 15px; font-weight: 600; color: var(--text-1); letter-spacing: -0.01em; }
+  .page-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; font-family: var(--mono); }
+
+  .pipeline-body { flex: 1; overflow-y: auto; padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* Binary header card */
+  .binary-card {
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .binary-icon { font-size: 20px; color: var(--accent); flex-shrink: 0; }
+  .binary-name { font-size: 13px; font-weight: 600; color: var(--text-1); font-family: var(--mono); }
+  .binary-meta { display: flex; gap: 12px; margin-top: 3px; }
+  .binary-tag { font-size: 10px; color: var(--text-3); background: rgba(255,255,255,0.05); border-radius: 3px; padding: 1px 5px; font-family: var(--mono); }
+
+  /* Mode selector */
+  .mode-row { display: flex; align-items: center; gap: 8px; }
+  .mode-label { font-size: 10px; color: var(--text-4); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; min-width: 80px; }
+  .mode-btn {
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+    color: var(--text-3); cursor: pointer; font-family: var(--mono);
+    text-transform: uppercase;
+  }
+  .mode-btn.selected { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  /* Phase list */
+  .phases-card {
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .phases-header {
+    padding: 10px 16px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-4);
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .phase-row:last-child { border-bottom: none; }
+  .phase-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .phase-status-dot.passed { background: var(--green); }
+  .phase-status-dot.running { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 1.4s ease infinite; }
+  .phase-status-dot.pending { background: rgba(255,255,255,0.12); }
+  .phase-status-dot.failed { background: var(--red); }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  .phase-num { font-size: 10px; color: var(--text-4); font-family: var(--mono); min-width: 16px; }
+  .phase-name { flex: 1; font-size: 12px; color: var(--text-2); font-weight: 500; }
+  .phase-agent { font-size: 10px; color: var(--text-3); font-family: var(--mono); }
+  .phase-badge {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 3px;
+  }
+  .phase-badge.passed { background: rgba(34,197,94,0.10); color: var(--green); }
+  .phase-badge.running { background: rgba(79,124,255,0.12); color: var(--accent); }
+  .phase-badge.pending { background: rgba(255,255,255,0.05); color: var(--text-4); }
+
+  /* Gates */
+  .gates-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .gates-title { font-size: 10px; color: var(--text-4); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .gate-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+  .gate-arrow { font-size: 10px; color: var(--text-4); font-family: var(--mono); min-width: 40px; }
+  .gate-cond { font-size: 10px; color: var(--text-3); font-family: var(--mono); }
+  .gate-cond span { color: var(--amber); }
+
+  /* Launch button */
+  .launch-btn {
+    height: 38px;
+    background: var(--accent);
+    border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+    color: #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .launch-btn:hover { background: #6B93FF; }
+
+  /* ─── RIGHT PANEL — OPERATOR CONSOLE ───────────────────────────── */
+  .operator {
+    width: 320px; flex-shrink: 0;
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .op-header {
+    height: 38px; padding: 0 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .op-title { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-4); }
+  .op-status { display: flex; align-items: center; gap: 5px; }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; }
+  .status-dot.running { background: var(--accent); animation: pulse 1.4s ease infinite; }
+  .status-dot.idle { background: rgba(255,255,255,0.18); }
+  .status-dot.gate { background: var(--amber); }
+  .status-text { font-size: 10px; color: var(--text-3); }
+
+  /* Phase progress in console */
+  .op-phase-bar { padding: 10px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .op-phase-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .op-phase-name { font-size: 11px; font-weight: 500; color: var(--text-2); }
+  .op-phase-agent { font-size: 10px; color: var(--text-3); font-family: var(--mono); }
+  .progress-track { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 300ms ease; }
+
+  /* Live stream */
+  .op-stream {
+    flex: 1; overflow-y: auto; padding: 10px 14px;
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--text-3); line-height: 1.7;
+    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent;
+  }
+  .stream-line { display: flex; gap: 6px; }
+  .stream-prompt { color: var(--accent); }
+  .stream-line.tool { color: rgba(245,158,11,0.7); }
+  .stream-line.finding { color: rgba(79,124,255,0.8); }
+  .stream-caret { display: inline-block; width: 6px; height: 12px; background: var(--accent); animation: blink 1s step-end infinite; vertical-align: -1px; margin-left: 2px; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Deposits in console */
+  .op-deposits { border-top: 1px solid var(--border); padding: 8px 0 6px; flex-shrink: 0; }
+  .op-deposits-title { padding: 0 14px 5px; font-size: 9px; color: var(--text-4); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+  .deposit-chip {
+    padding: 4px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .deposit-type { font-size: 10px; color: var(--text-2); font-family: var(--mono); display: flex; align-items: center; gap: 5px; }
+  .deposit-type .dot { font-size: 8px; color: var(--accent); }
+  .pheromone { font-size: 10px; color: var(--text-4); font-family: var(--mono); display: flex; align-items: center; gap: 4px; }
+  .pbar { letter-spacing: -1px; }
+  .pbar .filled { color: var(--accent); }
+  .pbar .empty { color: rgba(255,255,255,0.12); }
+  .pbar.amber .filled { color: var(--amber); }
+
+  /* Abort button */
+  .op-footer { padding: 10px 12px 12px; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .abort-btn {
+    width: 100%; height: 32px;
+    background: rgba(239,68,68,0.07);
+    border: 1px solid rgba(239,68,68,0.20);
+    border-radius: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+    color: rgba(239,68,68,0.7); cursor: pointer; font-family: var(--sans);
+    text-transform: uppercase;
+  }
+
+  /* ─── LABELS / ANNOTATIONS ──────────────────────────────────────── */
+  .annotation {
+    position: absolute;
+    font-size: 10px; font-weight: 500;
+    color: rgba(255,200,0,0.85);
+    background: rgba(0,0,0,0.75);
+    border: 1px solid rgba(255,200,0,0.35);
+    padding: 2px 7px; border-radius: 3px;
+    pointer-events: none;
+    white-space: nowrap;
+    font-family: var(--mono);
+  }
+  .ann-line {
+    position: absolute;
+    background: rgba(255,200,0,0.4);
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Titlebar -->
+  <div class="titlebar">
+    <div class="titlebar-dots">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+    </div>
+    <div class="titlebar-title">VRAX — Autonomous Binary RE Framework</div>
+  </div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-triangle"></div>
+      <div class="brand-name">VRAX</div>
+    </div>
+    <div class="topbar-sep"></div>
+    <div class="breadcrumb">
+      <span class="breadcrumb-file">WinRAR_v7.11.exe</span>
+      <span class="breadcrumb-dot">·</span>
+      <span class="breadcrumb-meta">PE32+ x64</span>
+      <span class="breadcrumb-dot">·</span>
+      <span class="breadcrumb-meta">1.42 MB</span>
+      <span class="breadcrumb-dot">·</span>
+      <span class="breadcrumb-meta">sha256: 3f9a1b...</span>
+    </div>
+    <div class="topbar-right">
+      <div class="phase-pill running">CRASH · Phase 1/4</div>
+      <div class="icon-btn">⚙</div>
+    </div>
+  </div>
+
+  <!-- Workbench -->
+  <div class="workbench">
+
+    <!-- LeftNav -->
+    <div class="leftnav">
+      <div class="nav-section-header">Workspace</div>
+      <div class="nav-item"><span class="nav-icon">⬡</span>Targets</div>
+      <div class="nav-item"><span class="nav-icon">◫</span>Campaigns</div>
+
+      <div class="nav-section-header">Analysis</div>
+      <div class="nav-item"><span class="nav-icon">◈</span>Overview</div>
+      <div class="nav-item"><span class="nav-icon">▤</span>Sections</div>
+      <div class="nav-item"><span class="nav-icon">↓</span>Imports</div>
+      <div class="nav-item"><span class="nav-icon">↑</span>Exports</div>
+
+      <div class="nav-section-header">Execution</div>
+      <div class="nav-item active"><span class="nav-icon">▶</span>Pipeline</div>
+      <div class="nav-item"><span class="nav-icon">✦</span>Swarm</div>
+
+      <div class="nav-section-header">Intel</div>
+      <div class="nav-item"><span class="nav-icon">◎</span>Evidence</div>
+      <div class="nav-item"><span class="nav-icon">⬡</span>Blackboard</div>
+
+      <div class="nav-section-header">Output</div>
+      <div class="nav-item"><span class="nav-icon">⊞</span>Reports</div>
+      <div class="nav-item"><span class="nav-icon">◆</span>MCP Hub</div>
+    </div>
+
+    <!-- Workspace — Pipeline Page -->
+    <div class="workspace">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Council Pipeline</div>
+          <div class="page-sub">CRASH mode · campaign: WinRAR_v7.11_2026-06-13_142230</div>
+        </div>
+      </div>
+
+      <div class="pipeline-body">
+        <!-- Binary card -->
+        <div class="binary-card">
+          <div class="binary-icon">⬡</div>
+          <div>
+            <div class="binary-name">WinRAR_v7.11.exe</div>
+            <div class="binary-meta">
+              <span class="binary-tag">PE32+</span>
+              <span class="binary-tag">x86-64</span>
+              <span class="binary-tag">1.42 MB</span>
+              <span class="binary-tag">ASLR · DEP · CFG</span>
+              <span class="binary-tag">MSVC 2022</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode selector -->
+        <div class="mode-row">
+          <div class="mode-label">Mode</div>
+          <div class="mode-btn selected">CRASH</div>
+          <div class="mode-btn">PATCH</div>
+          <div class="mode-btn">CTF</div>
+          <div class="mode-btn">MALWARE</div>
+          <div class="mode-btn">ZERO-DAY</div>
+          <div class="mode-btn">UAC-BYPASS</div>
+        </div>
+
+        <!-- Phase list -->
+        <div class="phases-card">
+          <div class="phases-header">Phase Sequence</div>
+
+          <div class="phase-row">
+            <div class="phase-status-dot passed"></div>
+            <div class="phase-num">0</div>
+            <div class="phase-name">MCP Health Check</div>
+            <div class="phase-agent">council-orchestrator</div>
+            <div class="phase-badge passed">PASSED</div>
+          </div>
+
+          <div class="phase-row" style="background: rgba(79,124,255,0.04);">
+            <div class="phase-status-dot running"></div>
+            <div class="phase-num">1</div>
+            <div class="phase-name">Binary Mapping</div>
+            <div class="phase-agent">security-analyst</div>
+            <div class="phase-badge running">RUNNING</div>
+          </div>
+
+          <div class="phase-row">
+            <div class="phase-status-dot pending"></div>
+            <div class="phase-num">2</div>
+            <div class="phase-name">Vulnerability Isolation</div>
+            <div class="phase-agent">vuln-isolator</div>
+            <div class="phase-badge pending">PENDING</div>
+          </div>
+
+          <div class="phase-row">
+            <div class="phase-status-dot pending"></div>
+            <div class="phase-num">3</div>
+            <div class="phase-name">Harness Build</div>
+            <div class="phase-agent">harness-engineer → harness-generator</div>
+            <div class="phase-badge pending">PENDING</div>
+          </div>
+
+          <div class="phase-row">
+            <div class="phase-status-dot pending"></div>
+            <div class="phase-num">4</div>
+            <div class="phase-name">Verification (3/3 runs)</div>
+            <div class="phase-agent">qa-tester</div>
+            <div class="phase-badge pending">PENDING</div>
+          </div>
+        </div>
+
+        <!-- Gate thresholds -->
+        <div class="gates-card">
+          <div class="gates-title">Gate Thresholds</div>
+          <div class="gate-row"><div class="gate-arrow">1 → 2</div><div class="gate-cond">confidence <span>≥ 0.60</span> AND verdict <span>≠ SAFE</span></div></div>
+          <div class="gate-row"><div class="gate-arrow">2 → 3</div><div class="gate-cond">rip_control.proven <span>== true</span></div></div>
+          <div class="gate-row"><div class="gate-arrow">3 → 4</div><div class="gate-cond">harness compiled with <span>0 warnings</span></div></div>
+          <div class="gate-row"><div class="gate-arrow">4 → ✓</div><div class="gate-cond">pass_hat_k <span>== 3/3</span> &amp; overall_verdict <span>== PASS</span></div></div>
+          <div class="gate-row" style="margin-top:4px;"><div class="gate-arrow"></div><div class="gate-cond" style="color:rgba(245,158,11,0.6);">HITL gate fires when consensus confidence &lt; <span>0.70</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Operator Console — RUNNING mode -->
+    <div class="operator">
+      <div class="op-header">
+        <div class="op-title">Operator</div>
+        <div class="op-status">
+          <div class="status-dot running"></div>
+          <div class="status-text">running</div>
+        </div>
+      </div>
+
+      <!-- Phase progress bar -->
+      <div class="op-phase-bar">
+        <div class="op-phase-info">
+          <div class="op-phase-name">Phase 1 of 4</div>
+          <div class="op-phase-agent">security-analyst · deepseek-v4-pro</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 62%;"></div>
+        </div>
+      </div>
+
+      <!-- Live stream -->
+      <div class="op-stream">
+        <div class="stream-line"><span class="stream-prompt">›</span> Loading WinRAR_v7.11.exe into Ghidra MCP</div>
+        <div class="stream-line"><span class="stream-prompt">›</span> Analyzing PE headers and sections...</div>
+        <div class="stream-line tool"><span>⚙</span> ghidra_mcp.list_functions → 1,847 functions</div>
+        <div class="stream-line tool"><span>⚙</span> ghidra_mcp.get_mitigations → ASLR DEP CFG</div>
+        <div class="stream-line finding"><span>◎</span> deposit_finding: MITIGATION_MAPPED  φ=1.0</div>
+        <div class="stream-line"><span class="stream-prompt">›</span> Scanning for archive parsing entry points...</div>
+        <div class="stream-line tool"><span>⚙</span> ghidra_mcp.find_references "WcReadRar5File"</div>
+        <div class="stream-line"><span class="stream-prompt">›</span> Found 3 high-risk parse functions</div>
+        <div class="stream-line tool"><span>⚙</span> ghidra_mcp.decompile 0x140021AF0</div>
+        <div class="stream-line"><span class="stream-prompt">›</span> Analyzing memcpy at offset +0x3C2...</div>
+        <div class="stream-line finding"><span>◎</span> deposit_finding: ATTACK_SURFACE_FOUND  φ=1.0</div>
+        <div class="stream-line"><span class="stream-prompt">›</span> Checking imports for dangerous patterns...<span class="stream-caret"></span></div>
+      </div>
+
+      <!-- Recent deposits -->
+      <div class="op-deposits">
+        <div class="op-deposits-title">Recent Deposits</div>
+        <div class="deposit-chip">
+          <div class="deposit-type"><span class="dot">✦</span>MITIGATION_MAPPED</div>
+          <div class="pheromone">φ=1.00 <span class="pbar"><span class="filled">████████</span></span></div>
+        </div>
+        <div class="deposit-chip">
+          <div class="deposit-type"><span class="dot">✦</span>ATTACK_SURFACE_FOUND</div>
+          <div class="pheromone">φ=1.00 <span class="pbar"><span class="filled">████████</span></span></div>
+        </div>
+        <div class="deposit-chip" style="opacity:0.7">
+          <div class="deposit-type"><span class="dot">✦</span>TARGET_REGISTERED</div>
+          <div class="pheromone">φ=0.94 <span class="pbar"><span class="filled">███████</span><span class="empty">░</span></span></div>
+        </div>
+      </div>
+
+      <!-- Abort -->
+      <div class="op-footer">
+        <button class="abort-btn">Abort Pipeline</button>
+      </div>
+    </div>
+
+  </div><!-- /workbench -->
+</div><!-- /app -->
+</body>
+</html>

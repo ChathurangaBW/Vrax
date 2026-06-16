@@ -1,0 +1,34 @@
+{
+  "description": "Council tool installation paths. All config lives in opencode root; only runtime paths reference external locations.",
+  "updated": "2026-06-10",
+  "ghidra_mcp": {
+    "bridge_script": "D:\\ghidra-mcp\\bridge_mcp_ghidra.py",
+    "transport": "streamable-http",
+    "host": "127.0.0.1",
+    "port": 8081,
+    "start_command": "python D:\\ghidra-mcp\\bridge_mcp_ghidra.py --transport streamable-http --mcp-host 127.0.0.1 --mcp-port 8081",
+    "health_url": "http://127.0.0.1:8081/mcp"
+  },
+  "ida_pro_mcp": {
+    "health_script": "scripts/ida_mcp_health.ps1",
+    "port": 13337,
+    "transport": "stdio"
+  },
+  "binary_ninja_mcp": {
+    "port": 9009,
+    "transport": "sse",
+    "health_url": "http://localhost:9009"
+  },
+  "owasp_zap": {
+    "port": 8282,
+    "health_url": "http://localhost:8282"
+  },
+  "build": {
+    "gcc": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+    "gpp": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+    "windres": "C:\\msys64\\ucrt64\\bin\\windres.exe"
+  },
+  "campaign_workspace_root": "D:\\vrax\\campaigns",
+  "central_brain_path": ".central_brain",
+  "knowledge_base_path": "knowledge-base"
+}

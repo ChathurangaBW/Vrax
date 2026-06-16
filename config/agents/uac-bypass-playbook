@@ -1,0 +1,71 @@
+# UAC Bypass Playbook — Bug Bounty / RE Pipeline
+# Agents: @uac-bypass-discovery (Phase 1) → @uac-poc-validator (Phase 2)
+
+## Philosophy
+
+**Not a report writer.** Hypothesis → IDA proof → lab PoC 3/3 → bounty narrative.
+
+| Phase | Agent | Output |
+|-------|-------|--------|
+| **1 — RE** | `@uac-bypass-discovery` | `uac_candidates.json`, `ida_evidence.json` |
+| **2 — PoC** | `@uac-poc-validator` | `uac_poc_results.json`, `poc_tests/*/evidence/` |
+| **Merge** | `@uac-bypass-discovery` | `uac_bounty_report.md` (VALIDATED only) |
+
+## Phase 1 — Discovery (IDA mandatory)
+
+1. Pick ≤5 candidates (deep) or bibliographic UACME sync (no bounty claim)
+2. IDA MCP on `host_binary`: manifest, xrefs, decompile, **save addresses**
+3. Write `uac_candidates.json` — `verification_level` = `HYPOTHESIS` only
+4. **Delegate** `@uac-poc-validator` — STOP
+
+## Phase 2 — PoC validation (lab mandatory)
+
+1. `uac_lab_capture.ps1` before/after each run
+2. `poc_tests/<id>/run_lab.ps1` + optional `marker.exe` from `templates/uac_lab_marker.c`
+3. **3/3** runs → `after_il` = High
+4. `py -3 uac_poc_validate.py --workspace <dir>` → exit 0
+5. Status `VALIDATED` or `FAILED` — never guess
+
+## Verification levels
+
+| Level | Meaning |
+|-------|---------|
+| `HYPOTHESIS` | RE + literature only |
+| `THEORETICAL` | PoC failed |
+| `BOUNTY_VALIDATED` | 3/3 PoC + IDA correlation + impact |
+| `VERIFIED_PATCHED` | Bibliographic / UACME fixed_in (no bounty) |
+
+## Catalog-only mode (explicit user request)
+
+User says "catalog only" / "no poc":
+
+- May run UACME 43–82 + `uac_validate.py --mode catalog`
+- **No** `BOUNTY_VALIDATED` rows
+
+## Scripts (MSYS64 PoC)
+
+| Script | When |
+|--------|------|
+| `uac_msys64.ps1` | `Test-UacMsys64`, `Build-UacLabMarker` |
+| `templates\poc_tests\_template\build.ps1` | gcc via `C:\msys64\mingw64\bin\gcc.exe` |
+| `templates\poc_tests\_template\run_lab.ps1` | 3/3 lab loop |
+| `ida_mcp_health.ps1` | Before IDA work |
+| `uac_lab_capture.ps1` | Each PoC run |
+| `uac_poc_validate.py` | After Phase 2 |
+| `uac_validate.py --mode bounty` | Final gate |
+
+## UACME + topics
+
+Primary: https://github.com/hfiref0x/UACME (43–82)
+Topics: https://github.com/topics/uac-bypass | see `uac_external_intel.json`
+
+## Anchors
+
+FodHelper | SilentCleanup | APPINFO RAiLaunchAdminProcess
+
+## Anti-patterns (instant FAIL)
+
+- 40-row JSON from README without IDA
+- `VERIFIED_ACTIVE` without `uac_poc_results.json`
+- Completing without delegating `@uac-poc-validator` on bounty tasks
+- Single-turn "master list" markdown

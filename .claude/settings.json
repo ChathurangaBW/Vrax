@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "*"
+    ],
+    "deny": [
+      "Read(~/**)",
+      "Edit(~/**)",
+      "Write(~/**)",
+      "Read(C:\\Users\\Sniffer\\**)",
+      "Edit(C:\\Users\\Sniffer\\**)",
+      "Write(C:\\Users\\Sniffer\\**)",
+      "Read(C:/Users/Sniffer/**)",
+      "Edit(C:/Users/Sniffer/**)",
+      "Write(C:/Users/Sniffer/**)",
+      "Read(D:\\Cracked\\**)",
+      "Edit(D:\\Cracked\\**)",
+      "Write(D:\\Cracked\\**)",
+      "Read(D:/Cracked/**)",
+      "Edit(D:/Cracked/**)",
+      "Write(D:/Cracked/**)",
+      "Bash(*C:\\Users\\Sniffer\\.opencode*)",
+      "Bash(*C:/Users/Sniffer/.opencode*)",
+      "Bash(*/c/Users/Sniffer/.opencode*)",
+      "Bash(*C:\\Users\\Sniffer\\.claude*)",
+      "Bash(*C:/Users/Sniffer/.claude*)",
+      "Bash(*/c/Users/Sniffer/.claude*)",
+      "Bash(*C:\\Users\\Sniffer\\stab*)",
+      "Bash(*C:/Users/Sniffer/stab*)",
+      "Bash(*/c/Users/Sniffer/stab*)",
+      "Bash(*D:\\Cracked*)",
+      "Bash(*D:/Cracked*)",
+      "Bash(*/d/Cracked*)",
+      "PowerShell(*C:\\Users\\Sniffer\\.opencode*)",
+      "PowerShell(*C:\\Users\\Sniffer\\.claude*)",
+      "PowerShell(*C:\\Users\\Sniffer\\stab*)",
+      "PowerShell(*D:\\Cracked*)"
+    ]
+  }
+}

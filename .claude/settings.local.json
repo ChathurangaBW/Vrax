@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem D:\\\\vrax\\\\packages\\\\app\\\\src\\\\vrax-v4 -Recurse | Where-Object { -not $_.PSIsContainer } | Select-Object -ExpandProperty FullName)"
+    ]
+  }
+}

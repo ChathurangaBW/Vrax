@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --chrome:#0A0C10;
+  --ws:#0D1117;
+  --panel:#111722;
+  --card:#172030;
+  --card2:#1C2A3A;
+  --b1:rgba(255,255,255,0.06);
+  --b2:rgba(255,255,255,0.10);
+  --b3:rgba(255,255,255,0.18);
+  --accent:#4F7CFF;
+  --accent-bg:rgba(79,124,255,0.12);
+  --accent-bd:rgba(79,124,255,0.28);
+  --green:#22C55E;
+  --green-bg:rgba(34,197,94,0.10);
+  --amber:#F59E0B;
+  --amber-bg:rgba(245,158,11,0.10);
+  --red:#EF4444;
+  --red-bg:rgba(239,68,68,0.10);
+  --t1:#D1D9E3;
+  --t2:rgba(255,255,255,0.55);
+  --t3:rgba(255,255,255,0.28);
+  --t4:rgba(255,255,255,0.13);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html,body{width:1440px;height:900px;overflow:hidden;background:var(--chrome);font-family:var(--sans);color:var(--t1);font-size:12px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+
+/* TOP NAV */
+.topnav{height:40px;background:var(--chrome);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 16px;flex-shrink:0;}
+.brand{display:flex;align-items:center;gap:8px;margin-right:22px;}
+.tri{width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid var(--accent);}
+.brand-txt{font-size:13px;font-weight:700;letter-spacing:0.14em;color:#fff;font-family:var(--mono);}
+.nav-sep{width:1px;height:18px;background:var(--b2);margin:0 4px;}
+.tn{display:flex;align-items:center;gap:5px;padding:0 11px;height:40px;font-size:11.5px;font-weight:500;color:var(--t3);cursor:pointer;transition:color 100ms;white-space:nowrap;}
+.tn:hover{color:var(--t2);}
+.tn-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.phase-lbl{font-size:10.5px;color:var(--t3);font-family:var(--mono);}
+.export-btn{height:30px;padding:0 16px;background:var(--accent);border:none;border-radius:6px;font-size:11.5px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.export-btn:hover{background:#6B93FF;}
+
+/* CAMPAIGN BAR */
+.cambar{height:34px;background:var(--chrome);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 16px 0 208px;gap:10px;flex-shrink:0;}
+.clbl{font-size:10px;color:var(--t4);letter-spacing:0.07em;text-transform:uppercase;font-weight:500;}
+.cval{font-size:11px;color:var(--t2);font-family:var(--mono);}
+.vsep{width:1px;height:13px;background:var(--b2);}
+.sc{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;border:1px solid;}
+.sc-c{color:var(--red);border-color:rgba(239,68,68,0.25);background:var(--red-bg);}
+.sc-h{color:var(--amber);border-color:rgba(245,158,11,0.25);background:var(--amber-bg);}
+.sc-m{color:#A78BFA;border-color:rgba(167,139,250,0.25);background:rgba(167,139,250,0.08);}
+.sc-l{color:var(--t3);border-color:var(--b2);background:rgba(255,255,255,0.04);}
+
+/* LAYOUT */
+.app{display:flex;flex-direction:column;height:900px;}
+.wb{display:flex;flex:1;min-height:0;overflow:hidden;}
+
+/* LEFT SIDEBAR */
+.lnav{width:192px;flex-shrink:0;background:var(--chrome);border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;}
+.lnav-scroll{flex:1;overflow-y:auto;padding:10px 0 4px;}
+.new-campaign{margin:0 10px 12px;height:32px;background:var(--accent);border:none;border-radius:6px;font-size:11.5px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.new-campaign:hover{background:#6B93FF;}
+.nav-sec{padding:9px 14px 3px;font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--t4);}
+.ni{display:flex;align-items:center;gap:8px;padding:0 14px;height:27px;font-size:11.5px;color:var(--t3);cursor:pointer;position:relative;transition:all 100ms;}
+.ni:hover{background:rgba(255,255,255,0.04);color:var(--t2);}
+.ni.active{background:rgba(79,124,255,0.10);color:#fff;border-left:2px solid var(--accent);padding-left:12px;}
+.ni-ico{font-size:10px;width:13px;text-align:center;flex-shrink:0;}
+.ni-badge{margin-left:auto;font-size:9px;background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.20);border-radius:3px;padding:0 4px;font-family:var(--mono);}
+
+/* MCP STATUS PANEL — bottom of left sidebar */
+.mcp-panel{
+  border-top:1px solid var(--b2);
+  flex-shrink:0;
+  background:rgba(0,0,0,0.20);
+}
+.mcp-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px 5px;
+  cursor:pointer;
+}
+.mcp-panel-title{font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--t4);display:flex;align-items:center;gap:5px;}
+.mcp-summary{font-size:9px;color:var(--green);font-family:var(--mono);}
+.mcp-list{padding:0 10px 8px;display:flex;flex-direction:column;gap:3px;}
+
+/* Individual MCP row */
+.mcp-row{display:flex;align-items:center;gap:7px;padding:5px 6px;border-radius:5px;background:var(--card);border:1px solid var(--b1);}
+.mcp-avail{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.mcp-avail.on{background:var(--green);box-shadow:0 0 5px rgba(34,197,94,0.5);}
+.mcp-avail.off{background:var(--red);}
+.mcp-avail.checking{background:var(--amber);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.mcp-info{flex:1;min-width:0;}
+.mcp-name{font-size:10px;font-weight:500;color:var(--t2);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mcp-sub{font-size:9px;color:var(--t4);font-family:var(--mono);display:flex;align-items:center;gap:5px;}
+.mcp-port{color:var(--t4);}
+.mcp-tools{color:var(--accent);font-size:9px;}
+.mcp-priority{font-size:8px;padding:0 4px;border-radius:2px;border:1px solid;text-transform:uppercase;font-weight:700;letter-spacing:0.05em;}
+.mcp-priority.pri{color:var(--amber);border-color:rgba(245,158,11,0.25);background:var(--amber-bg);}
+.mcp-priority.sec{color:var(--t3);border-color:var(--b2);background:rgba(255,255,255,0.03);}
+
+/* Toggle switch */
+.toggle{width:28px;height:15px;border-radius:8px;border:1px solid;cursor:pointer;flex-shrink:0;position:relative;transition:background 200ms,border-color 200ms;}
+.toggle.on{background:rgba(79,124,255,0.30);border-color:var(--accent);}
+.toggle.off{background:rgba(255,255,255,0.05);border-color:var(--b2);}
+.toggle-knob{position:absolute;top:2px;width:9px;height:9px;border-radius:50%;transition:left 200ms;background:#fff;}
+.toggle.on .toggle-knob{left:16px;}
+.toggle.off .toggle-knob{left:2px;background:rgba(255,255,255,0.35);}
+.toggle.off-hard{background:rgba(239,68,68,0.10);border-color:rgba(239,68,68,0.25);}
+.toggle.off-hard .toggle-knob{left:2px;background:var(--red);opacity:0.6;}
+
+/* WORKSPACE */
+.ws{flex:1;min-width:0;background:var(--ws);display:flex;flex-direction:column;overflow:hidden;}
+
+/* Tabs */
+.tabs{height:38px;border-bottom:1px solid var(--b1);display:flex;align-items:flex-end;padding:0 20px;flex-shrink:0;}
+.tab{padding:0 14px;height:38px;display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all 120ms;white-space:nowrap;}
+.tab:hover{color:var(--t2);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+.tbadge{font-size:9px;background:var(--accent-bg);color:var(--accent);border-radius:10px;padding:1px 5px;font-family:var(--mono);}
+.tbadge.r{background:var(--red-bg);color:var(--red);}
+
+/* Filters */
+.filters{display:flex;align-items:center;gap:6px;padding:10px 20px;flex-shrink:0;border-bottom:1px solid var(--b1);}
+.fc{padding:3px 10px;border-radius:4px;border:1px solid var(--b2);font-size:10.5px;font-weight:500;color:var(--t3);cursor:pointer;transition:all 100ms;}
+.fc.all{border-color:var(--b3);color:var(--t2);background:rgba(255,255,255,0.05);}
+.fc.crit{color:var(--red);border-color:rgba(239,68,68,0.30);background:var(--red-bg);}
+.fc.high{color:var(--amber);border-color:rgba(245,158,11,0.30);background:var(--amber-bg);}
+.fc.med{color:#A78BFA;border-color:rgba(167,139,250,0.28);background:rgba(167,139,250,0.08);}
+.fc.low{color:var(--t3);border-color:var(--b2);}
+.fc.arch{color:var(--t4);border-color:var(--b1);}
+.fright{margin-left:auto;display:flex;gap:6px;}
+.sortbtn{height:26px;padding:0 10px;border:1px solid var(--b2);border-radius:5px;background:transparent;font-size:10px;color:var(--t3);cursor:pointer;}
+
+/* Findings */
+.findings{flex:1;overflow-y:auto;padding:12px 20px 20px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.07) transparent;}
+
+/* Finding card */
+.fcard{background:var(--card);border:1px solid var(--b2);border-radius:8px;overflow:hidden;transition:border-color 150ms;}
+.fcard:hover{border-color:var(--b3);}
+.fcard.open{border-color:rgba(79,124,255,0.25);}
+.fhead{padding:11px 14px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+.fsev{font-size:9px;font-weight:700;letter-spacing:0.10em;padding:2px 7px;border-radius:3px;border:1px solid;flex-shrink:0;margin-top:1px;text-transform:uppercase;}
+.fsev.c{color:var(--red);border-color:rgba(239,68,68,0.30);background:var(--red-bg);}
+.fsev.h{color:var(--amber);border-color:rgba(245,158,11,0.30);background:var(--amber-bg);}
+.fsev.m{color:#A78BFA;border-color:rgba(167,139,250,0.28);background:rgba(167,139,250,0.08);}
+.fbody{flex:1;min-width:0;}
+.ftitle{font-size:12.5px;font-weight:600;color:var(--t1);line-height:1.3;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.chip-ok{font-size:9px;font-weight:600;letter-spacing:0.07em;padding:1px 6px;border-radius:3px;background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,0.22);text-transform:uppercase;}
+.fmeta{display:flex;align-items:center;gap:8px;margin-top:4px;}
+.fagent{font-size:10px;color:var(--t4);font-family:var(--mono);}
+.fphi{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--t4);font-family:var(--mono);}
+.pb-b .f{color:var(--accent);}
+.pb-b .e{color:rgba(255,255,255,0.09);}
+.pb-a .f{color:var(--amber);}
+.pb-a .e{color:rgba(255,255,255,0.09);}
+.ftype{font-size:9.5px;color:var(--t4);font-family:var(--mono);}
+.factions{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+.fab{height:24px;padding:0 10px;border-radius:4px;border:1px solid var(--b2);background:transparent;font-size:10px;font-weight:500;color:var(--t3);cursor:pointer;transition:all 100ms;}
+.fab:hover{border-color:var(--b3);color:var(--t2);}
+.fab.ver{border-color:var(--accent-bd);color:var(--accent);background:var(--accent-bg);}
+.farr{color:var(--t4);font-size:10px;flex-shrink:0;margin-top:1px;transition:transform 180ms;}
+.fcard.open .farr{transform:rotate(90deg);}
+.fexp{border-top:1px solid var(--b1);background:rgba(0,0,0,0.20);}
+.fdesc{padding:10px 14px 6px;font-size:11px;color:var(--t2);line-height:1.65;}
+.fdesc strong{color:var(--t1);}
+.fterm{margin:4px 14px 10px;background:#070A0D;border:1px solid var(--b2);border-radius:6px;padding:10px 12px;font-family:var(--mono);font-size:10.5px;line-height:1.75;}
+.tl{display:flex;gap:5px;}
+.tp{color:var(--accent);}
+.tt{color:rgba(245,158,11,0.78);}
+.tok{color:var(--green);}
+.tv{color:#A78BFA;}
+.td{color:var(--t3);}
+.ffooter{padding:5px 14px 10px;display:flex;gap:7px;}
+.ffb{height:22px;padding:0 9px;border-radius:4px;border:1px solid var(--b2);background:transparent;font-size:9.5px;color:var(--t3);cursor:pointer;}
+.ffb:hover{border-color:var(--b3);color:var(--t2);}
+
+/* RIGHT PANEL */
+.op{width:340px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;}
+.op-hdr{height:38px;padding:0 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.op-ttl{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3);}
+.op-st{display:flex;align-items:center;gap:5px;}
+.sdot{width:5px;height:5px;border-radius:50%;}
+.sdot.run{background:var(--accent);animation:pulse 1.4s ease infinite;}
+.stxt{font-size:10px;color:var(--t3);}
+.op-sec{padding:9px 14px 7px;border-bottom:1px solid var(--b1);flex-shrink:0;}
+.op-sec-lbl{font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--t4);margin-bottom:5px;}
+.op-bullet{font-size:10.5px;color:var(--t2);line-height:1.5;padding-left:10px;position:relative;margin-bottom:3px;}
+.op-bullet::before{content:'·';position:absolute;left:1px;color:var(--accent);font-size:14px;line-height:1.2;}
+.op-bullet strong{color:var(--t1);}
+.op-arrow{font-size:10.5px;color:var(--t2);line-height:1.5;padding-left:12px;position:relative;margin-bottom:3px;}
+.op-arrow::before{content:'→';position:absolute;left:0;color:var(--amber);font-size:9px;top:2px;}
+.op-arrow strong{color:var(--t1);}
+.op-tool-hdr{padding:7px 14px 3px;font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--t4);flex-shrink:0;}
+.op-tools{flex:1;overflow-y:auto;padding:2px 8px 6px;display:flex;flex-direction:column;gap:4px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.06) transparent;}
+.tc{background:var(--card);border:1px solid var(--b1);border-radius:6px;overflow:hidden;transition:border-color 120ms;}
+.tc:hover{border-color:var(--b2);}
+.tc.run{border-color:rgba(79,124,255,0.22);}
+.tc-head{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;cursor:pointer;}
+.tcb{width:15px;height:15px;border-radius:3px;border:1.5px solid;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:8px;}
+.tcb.done{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tcb.run{background:var(--accent-bg);border-color:var(--accent);color:var(--accent);animation:pulse 1.4s ease infinite;}
+.tcb.q{border-color:var(--b3);}
+.tc-desc{flex:1;font-size:10.5px;color:var(--t2);line-height:1.4;}
+.tc-name{display:block;color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:500;margin-bottom:1px;}
+.tc-r{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.tc-time{font-size:9px;color:var(--t4);font-family:var(--mono);}
+.tc-rerun{font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid var(--b2);color:var(--t4);background:transparent;cursor:pointer;}
+.tc-arr{font-size:9px;color:var(--t4);transition:transform 180ms;}
+.tc.open .tc-arr{transform:rotate(90deg);}
+.tc-body{border-top:1px solid var(--b1);background:rgba(0,0,0,0.28);}
+.tc-term{padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.7;}
+.tlbl{font-size:9px;color:var(--t4);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px;}
+.tc-clp{padding:2px 10px 6px;text-align:right;}
+.clp-btn{font-size:9px;color:var(--t4);background:transparent;border:none;cursor:pointer;text-decoration:underline;}
+.op-btm{border-top:1px solid var(--b1);padding:8px 10px 8px;flex-shrink:0;}
+.op-btns{display:flex;gap:6px;margin-bottom:7px;}
+.sel-btn{flex:1;height:28px;border:1px solid var(--b2);border-radius:5px;background:transparent;font-size:10.5px;color:var(--t2);cursor:pointer;}
+.exc-btn{height:28px;padding:0 18px;background:var(--accent);border:none;border-radius:5px;font-size:10.5px;font-weight:600;color:#fff;cursor:pointer;}
+.op-inp{background:var(--card);border:1px solid var(--b2);border-radius:6px;overflow:hidden;}
+.op-inp input{width:100%;background:transparent;border:none;padding:7px 10px;font-size:11px;color:var(--t2);outline:none;font-family:var(--sans);}
+.op-inp input::placeholder{color:var(--t4);}
+.op-inp-ft{display:flex;align-items:center;justify-content:space-between;padding:2px 7px 5px;}
+.mode-pill{display:flex;align-items:center;gap:4px;background:var(--card2);border:1px solid var(--b2);border-radius:4px;padding:2px 8px;font-size:9.5px;color:var(--t2);cursor:pointer;}
+.send{width:26px;height:26px;background:var(--accent);border:none;border-radius:4px;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="brand"><div class="tri"></div><div class="brand-txt">VRAX</div></div>
+    <div class="nav-sep"></div>
+    <div class="tn">+ New Project</div>
+    <div class="tn">⚙ Settings</div>
+    <div class="tn">◈ TTP Library</div>
+    <div class="tn">⬡ Toolbox</div>
+    <div class="tn">◎ MCP Hub</div>
+    <div class="tn">? User Guide</div>
+    <div class="tn-right">
+      <div class="phase-lbl">CRASH · Phase 2/4</div>
+      <button class="export-btn">↗ Export Report</button>
+    </div>
+  </div>
+
+  <!-- CAMPAIGN BAR -->
+  <div class="cambar">
+    <span class="clbl">Target</span>
+    <span class="cval">WinRAR_v7.11.exe</span>
+    <div class="vsep"></div>
+    <span class="cval" style="color:var(--t3);font-size:10px;">PE32+ · x64 · 1.42 MB</span>
+    <div class="vsep"></div>
+    <div class="sc sc-c">CRITICAL 2</div>
+    <div class="sc sc-h">HIGH 5</div>
+    <div class="sc sc-m">MEDIUM 3</div>
+    <div class="sc sc-l">LOW 1</div>
+    <div class="vsep"></div>
+    <span class="cval" style="font-size:10px;color:var(--t4);">sha256: 3f9a1b7e4dc2…</span>
+  </div>
+
+  <div class="wb">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="lnav">
+      <div class="lnav-scroll">
+        <button class="new-campaign">+ New Campaign</button>
+
+        <div class="nav-sec">Workspace</div>
+        <div class="ni"><span class="ni-ico">⬡</span>Targets</div>
+        <div class="ni"><span class="ni-ico">◫</span>Campaigns</div>
+
+        <div class="nav-sec">Analysis</div>
+        <div class="ni"><span class="ni-ico">◈</span>Overview</div>
+        <div class="ni"><span class="ni-ico">▤</span>Sections</div>
+        <div class="ni"><span class="ni-ico">↓</span>Imports</div>
+        <div class="ni"><span class="ni-ico">↑</span>Exports</div>
+
+        <div class="nav-sec">Execution</div>
+        <div class="ni"><span class="ni-ico">▶</span>Pipeline</div>
+        <div class="ni"><span class="ni-ico">✦</span>Swarm</div>
+
+        <div class="nav-sec">Intel</div>
+        <div class="ni"><span class="ni-ico">◎</span>Evidence</div>
+        <div class="ni active"><span class="ni-ico">⬡</span>Blackboard<span class="ni-badge">11</span></div>
+
+        <div class="nav-sec">Output</div>
+        <div class="ni"><span class="ni-ico">⊞</span>Reports</div>
+      </div>
+
+      <!-- MCP STATUS — pinned to bottom of left sidebar -->
+      <div class="mcp-panel">
+        <div class="mcp-panel-header">
+          <div class="mcp-panel-title">⬡ MCP Servers</div>
+          <div class="mcp-summary">3/4 online</div>
+        </div>
+        <div class="mcp-list">
+
+          <!-- ghidra_mcp — PRIMARY, ONLINE -->
+          <div class="mcp-row">
+            <div class="mcp-avail on"></div>
+            <div class="mcp-info">
+              <div class="mcp-name">ghidra_mcp</div>
+              <div class="mcp-sub">
+                <span class="mcp-port">:8081</span>
+                <span class="mcp-tools">249 tools</span>
+                <span class="mcp-priority pri">PRI</span>
+              </div>
+            </div>
+            <div class="toggle on"><div class="toggle-knob"></div></div>
+          </div>
+
+          <!-- ida_pro_mcp — SECONDARY, ONLINE -->
+          <div class="mcp-row">
+            <div class="mcp-avail on"></div>
+            <div class="mcp-info">
+              <div class="mcp-name">ida_pro_mcp</div>
+              <div class="mcp-sub">
+                <span class="mcp-port">:13337</span>
+                <span class="mcp-tools">32 tools</span>
+                <span class="mcp-priority sec">SEC</span>
+              </div>
+            </div>
+            <div class="toggle on"><div class="toggle-knob"></div></div>
+          </div>
+
+          <!-- binary_ninja — SECONDARY, OFFLINE -->
+          <div class="mcp-row" style="opacity:0.7;">
+            <div class="mcp-avail off"></div>
+            <div class="mcp-info">
+              <div class="mcp-name" style="color:var(--t3);">binary_ninja</div>
+              <div class="mcp-sub">
+                <span class="mcp-port">:9009</span>
+                <span style="color:var(--red);font-size:9px;">offline</span>
+                <span class="mcp-priority sec">SEC</span>
+              </div>
+            </div>
+            <div class="toggle off-hard"><div class="toggle-knob"></div></div>
+          </div>
+
+          <!-- zap — WEB, ONLINE -->
+          <div class="mcp-row">
+            <div class="mcp-avail on"></div>
+            <div class="mcp-info">
+              <div class="mcp-name">zap</div>
+              <div class="mcp-sub">
+                <span class="mcp-port">:8282</span>
+                <span class="mcp-tools">8 tools</span>
+                <span class="mcp-priority sec">WEB</span>
+              </div>
+            </div>
+            <div class="toggle on"><div class="toggle-knob"></div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKSPACE -->
+    <div class="ws">
+      <div class="tabs">
+        <div class="tab">Pipeline <span class="tbadge">4</span></div>
+        <div class="tab">Overview</div>
+        <div class="tab">Threat Map</div>
+        <div class="tab active">Blackboard <span class="tbadge">11</span></div>
+        <div class="tab">Evidence</div>
+        <div class="tab">Tool Results <span class="tbadge r">3</span></div>
+      </div>
+
+      <div class="filters">
+        <div class="fc all">ALL · 11</div>
+        <div class="fc crit">CRITICAL · 2</div>
+        <div class="fc high">HIGH · 5</div>
+        <div class="fc med">MEDIUM · 3</div>
+        <div class="fc low">LOW · 1</div>
+        <div class="fc arch">ARCHIVED · 8</div>
+        <div class="fright">
+          <button class="sortbtn">φ Weight ▾</button>
+          <button class="sortbtn">⊞ View</button>
+        </div>
+      </div>
+
+      <div class="findings">
+
+        <!-- FINDING 1 — CRITICAL, EXPANDED -->
+        <div class="fcard open">
+          <div class="fhead">
+            <div class="fsev c">CRITICAL</div>
+            <div class="fbody">
+              <div class="ftitle">Stack Buffer Overflow — WcReadRar5File<span class="chip-ok">CONFIRMED</span></div>
+              <div class="fmeta">
+                <span class="fagent">vuln-isolator · deepseek-v4-pro</span>
+                <span class="fphi">φ=0.97 <span class="pb-b"><span class="f">████████</span></span></span>
+                <span class="ftype">RIP_CONTROL_PROVEN</span>
+              </div>
+            </div>
+            <div class="factions"><button class="fab ver">✓ Verify</button><button class="fab">Archive</button></div>
+            <span class="farr">▶</span>
+          </div>
+          <div class="fexp">
+            <div class="fdesc">
+              <strong>memcpy at 0x140021AF0+0x3C2</strong> copies attacker-controlled archive header name field into a fixed <strong>512-byte stack buffer</strong> with no bounds check.
+              EIP/RIP control confirmed at padding offset <strong>524 bytes</strong>. Bad chars: <strong>\x00 \x0a \x0d</strong>. Image base <strong>0x140000000 static</strong> — no leak required for .text gadgets.
+            </div>
+            <div class="fterm">
+              <div class="tlbl">IDA Decompile — 0x140021AF0</div>
+              <div class="tl"><span class="td">void&nbsp;</span><span class="tt">WcReadRar5File</span><span class="td">(HANDLE hFile, RAR5_HEADER *hdr) {</span></div>
+              <div class="tl"><span class="td">&nbsp;&nbsp;char&nbsp;</span><span class="tv">local_buf</span><span class="td">[0x200];&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="tok">// 512 bytes on stack</span></div>
+              <div class="tl"><span class="td">&nbsp;&nbsp;memcpy(local_buf, hdr-&gt;name,&nbsp;</span><span class="tv">hdr-&gt;name_size</span><span class="td">);</span></div>
+              <div class="tl"><span class="tok">&nbsp;&nbsp;// ↑ name_size user-controlled — no bounds check</span></div>
+              <div class="tl"><span class="tp">offset 524&nbsp;</span><span class="tv">→ EIP&nbsp;</span><span class="tok">overwrite confirmed · bad chars \x00\x0a\x0d</span></div>
+            </div>
+            <div class="ffooter">
+              <button class="ffb">View in IDA</button>
+              <button class="ffb">Build ROP Chain</button>
+              <button class="ffb">Generate YARA</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FINDING 2 -->
+        <div class="fcard">
+          <div class="fhead">
+            <div class="fsev c">CRITICAL</div>
+            <div class="fbody">
+              <div class="ftitle">Use-After-Free — CRarArchive Destructor<span class="chip-ok">CONFIRMED</span></div>
+              <div class="fmeta">
+                <span class="fagent">zero-day-hunter · qwen3.7-max</span>
+                <span class="fphi">φ=0.91 <span class="pb-b"><span class="f">███████</span><span class="e">░</span></span></span>
+                <span class="ftype">VULNERABILITY_IDENTIFIED</span>
+              </div>
+            </div>
+            <div class="factions"><button class="fab ver">✓ Verify</button><button class="fab">Archive</button></div>
+            <span class="farr">▶</span>
+          </div>
+        </div>
+
+        <!-- FINDING 3 -->
+        <div class="fcard">
+          <div class="fhead">
+            <div class="fsev h">HIGH</div>
+            <div class="fbody">
+              <div class="ftitle">Integer Overflow — Archive Size Parsing</div>
+              <div class="fmeta">
+                <span class="fagent">security-analyst · deepseek-v4-pro</span>
+                <span class="fphi">φ=0.84 <span class="pb-b"><span class="f">███████</span><span class="e">░</span></span></span>
+                <span class="ftype">VULNERABILITY_IDENTIFIED</span>
+              </div>
+            </div>
+            <div class="factions"><button class="fab ver">✓ Verify</button><button class="fab">Archive</button></div>
+            <span class="farr">▶</span>
+          </div>
+        </div>
+
+        <!-- FINDING 4 -->
+        <div class="fcard">
+          <div class="fhead">
+            <div class="fsev h">HIGH</div>
+            <div class="fbody">
+              <div class="ftitle">Attack Surface: WcReadRar5File · CRarArchive::Extract · UnRAR32</div>
+              <div class="fmeta">
+                <span class="fagent">security-analyst · deepseek-v4-pro</span>
+                <span class="fphi">φ=0.79 <span class="pb-a"><span class="f">██████</span><span class="e">░░</span></span></span>
+                <span class="ftype">ATTACK_SURFACE_FOUND</span>
+              </div>
+            </div>
+            <div class="factions"><button class="fab">Archive</button></div>
+            <span class="farr">▶</span>
+          </div>
+        </div>
+
+        <!-- FINDING 5 -->
+        <div class="fcard">
+          <div class="fhead">
+            <div class="fsev h">HIGH</div>
+            <div class="fbody">
+              <div class="ftitle">Mitigations Mapped: ASLR · DEP · CFG present — Stack Cookies ABSENT</div>
+              <div class="fmeta">
+                <span class="fagent">security-analyst · deepseek-v4-pro</span>
+                <span class="fphi">φ=0.76 <span class="pb-a"><span class="f">██████</span><span class="e">░░</span></span></span>
+                <span class="ftype">MITIGATION_MAPPED</span>
+              </div>
+            </div>
+            <div class="factions"><button class="fab">Archive</button></div>
+            <span class="farr">▶</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="op">
+      <div class="op-hdr">
+        <div class="op-ttl">Operator Console</div>
+        <div class="op-st"><div class="sdot run"></div><div class="stxt">running · Phase 2/4</div></div>
+      </div>
+
+      <div class="op-sec">
+        <div class="op-sec-lbl">◉ Current Analysis</div>
+        <div class="op-bullet"><strong>RIP control proven</strong> at offset 524 — EIP overwrite confirmed via cyclic pattern.</div>
+        <div class="op-bullet">Bad chars <strong>\x00 \x0a \x0d</strong> — 519 usable payload bytes remain.</div>
+        <div class="op-bullet">Static image base <strong>0x140000000</strong> — no leak needed for .text gadgets.</div>
+      </div>
+
+      <div class="op-sec">
+        <div class="op-sec-lbl">⚡ Next Actions</div>
+        <div class="op-arrow">Dispatch <strong>rop-chain-builder</strong> — VirtualProtect gadgets for DEP bypass</div>
+        <div class="op-arrow">Run <strong>pre-poc-research</strong> — prior art on WinRAR heap spray</div>
+        <div class="op-arrow">Gate φ=<strong>0.97 ≥ 0.70</strong> — auto-advance to Phase 3</div>
+      </div>
+
+      <div class="op-tool-hdr">⚙ Tool Invocation</div>
+      <div class="op-tools">
+
+        <div class="tc">
+          <div class="tc-head">
+            <div class="tcb done">✓</div>
+            <div class="tc-desc"><span class="tc-name">ghidra_mcp.list_functions</span>Enumerate 1,847 functions — locate archive parse entry points</div>
+            <div class="tc-r"><span class="tc-time">0.3s</span><button class="tc-rerun">Re-run</button><span class="tc-arr">▶</span></div>
+          </div>
+        </div>
+
+        <div class="tc">
+          <div class="tc-head">
+            <div class="tcb done">✓</div>
+            <div class="tc-desc"><span class="tc-name">ghidra_mcp.get_mitigations</span>Check ASLR, DEP, CFG, stack cookies — map exploitation constraints</div>
+            <div class="tc-r"><span class="tc-time">0.1s</span><button class="tc-rerun">Re-run</button><span class="tc-arr">▶</span></div>
+          </div>
+        </div>
+
+        <div class="tc open">
+          <div class="tc-head">
+            <div class="tcb done">✓</div>
+            <div class="tc-desc"><span class="tc-name">ghidra_mcp.decompile 0x140021AF0</span>Decompile WcReadRar5File — confirm memcpy overflow site</div>
+            <div class="tc-r"><span class="tc-time">1.2s</span><button class="tc-rerun">Re-run</button><span class="tc-arr">▶</span></div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-term">
+              <div class="tlbl">Output</div>
+              <div class="tl"><span class="td">char&nbsp;</span><span class="tv">local_buf</span><span class="td">[0x200];&nbsp;</span><span class="tok">// 512B stack</span></div>
+              <div class="tl"><span class="td">memcpy(buf, hdr-&gt;name,&nbsp;</span><span class="tv">hdr-&gt;name_size</span><span class="td">);</span></div>
+              <div class="tl"><span class="tok">// overflow confirmed — no bounds check</span></div>
+            </div>
+            <div class="tc-clp"><button class="clp-btn">Collapse Result</button></div>
+          </div>
+        </div>
+
+        <div class="tc">
+          <div class="tc-head">
+            <div class="tcb done">✓</div>
+            <div class="tc-desc"><span class="tc-name">deposit_finding: RIP_CONTROL_PROVEN</span>Blackboard write — φ=0.97, offset 524, bad chars logged</div>
+            <div class="tc-r"><span class="tc-time">0s</span><span class="tc-arr">▶</span></div>
+          </div>
+        </div>
+
+        <div class="tc run">
+          <div class="tc-head">
+            <div class="tcb run">◉</div>
+            <div class="tc-desc"><span class="tc-name">ida_pro_mcp.xrefs_to 0x140021AF0</span>Map all callers — full attack surface breadth</div>
+            <div class="tc-r"><span class="tc-time" style="color:var(--accent);">running…</span><span class="tc-arr">▶</span></div>
+          </div>
+        </div>
+
+        <div class="tc">
+          <div class="tc-head">
+            <div class="tcb q"></div>
+            <div class="tc-desc"><span class="tc-name">ghidra_mcp.find_rop_gadgets</span>VirtualProtect gadgets — DEP bypass chain</div>
+            <div class="tc-r"><span class="tc-time" style="color:var(--t4);">queued</span><span class="tc-arr">▶</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="op-btm">
+        <div class="op-btns">
+          <button class="sel-btn">Select All</button>
+          <button class="exc-btn">Execute</button>
+        </div>
+        <div class="op-inp">
+          <input type="text" placeholder="Enter prompt or override…"/>
+          <div class="op-inp-ft">
+            <div class="mode-pill">Auto ▾</div>
+            <button class="send">↑</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+﻿@import "@vrax/ui/styles/tailwind";
+@import "@vrax/ui/v2/styles/tailwind.css";
+
+/* VRAX design system — scoped accent tokens for the reverse-engineering
+   workstation surfaces. Kept separate from the shared theme so the rest of the
+   component library is unaffected. */
+:root {
+  /* VRAX design tokens */
+  --vrax-bg: #0A0C10;
+  --vrax-surface: #0D1117;
+  --vrax-surface-2: #111722;
+  --vrax-border: #1E2A3A;
+  --vrax-accent: #4F7CFF;
+  --vrax-accent-2: #7c3aed;
+  --vrax-success: #22C55E;
+  --vrax-warning: #F59E0B;
+  --vrax-danger: #EF4444;
+  --vrax-text: #D1D9E3;
+  --vrax-text-dim: #8892A0;
+  --vrax-consensus: #7c3aed;
+  --vrax-panel-raised: #172030;
+  --vrax-sev-critical: #EF4444;
+  --vrax-sev-high: #F97316;
+  --vrax-sev-medium: #F59E0B;
+  --vrax-sev-low: #3B82F6;
+  --vrax-sev-info: #64748b;
+
+  /* Force dark mode globally — VRAX is always dark */
+  color-scheme: dark;
+
+  /* Override upstream OpenCode light-theme defaults */
+  --background-base: #0D1117;
+  --background-weak: #0A0C10;
+  --background-strong: #111722;
+  --background-stronger: #111722;
+
+  --surface-base: rgba(255,255,255,0.031);
+  --base: rgba(255,255,255,0.034);
+  --surface-base-hover: rgba(255,255,255,0.039);
+  --surface-base-active: rgba(255,255,255,0.059);
+  --surface-base-interactive-active: rgba(79,124,255,0.125);
+  --base2: rgba(255,255,255,0.034);
+  --base3: rgba(255,255,255,0.034);
+  --surface-inset-base: rgba(0,0,0,0.5);
+  --surface-inset-base-hover: rgba(0,0,0,0.5);
+  --surface-inset-strong: rgba(0,0,0,0.8);
+  --surface-inset-strong-hover: rgba(0,0,0,0.8);
+  --surface-raised-base: rgba(255,255,255,0.05);
+  --surface-float-base: #111722;
+  --surface-float-base-hover: #172030;
+  --surface-raised-base-hover: rgba(255,255,255,0.078);
+  --surface-raised-base-active: rgba(255,255,255,0.102);
+  --surface-raised-strong: rgba(255,255,255,0.078);
+  --surface-raised-strong-hover: rgba(255,255,255,0.129);
+  --surface-raised-stronger: rgba(255,255,255,0.129);
+  --surface-raised-stronger-hover: rgba(255,255,255,0.169);
+  --surface-raised-stronger-non-alpha: #172030;
+  --surface-stronger-non-alpha: #172030;
+  --surface-weak: rgba(255,255,255,0.078);
+  --surface-weaker: rgba(255,255,255,0.102);
+  --surface-strong: rgba(255,255,255,0.169);
+
+  --surface-diff-unchanged-base: #0D1117;
+  --surface-diff-add-base: #1a2919;
+  --surface-diff-add-weak: #1f351e;
+  --surface-diff-add-strong: #264024;
+  --surface-diff-add-stronger: #9bcd97;
+  --surface-diff-delete-base: #42120b;
+  --surface-diff-delete-weak: #580f06;
+  --surface-diff-delete-strong: #6a1206;
+  --surface-diff-delete-stronger: #faa494;
+
+  --input-base: #111722;
+  --input-hover: #172030;
+  --input-active: #172030;
+  --input-selected: #0b1730;
+  --input-focus: #172030;
+  --input-disabled: #0D1117;
+
+  --text-base: rgba(255,255,255,0.72);
+  --text-weak: rgba(255,255,255,0.44);
+  --text-weaker: rgba(255,255,255,0.28);
+  --text-strong: rgba(255,255,255,0.93);
+  --text-stronger: rgba(255,255,255,0.97);
+  --text-invert-base: #8892A0;
+  --text-interactive-base: #4F7CFF;
+  --text-on-brand-base: rgba(255,255,255,0.9);
+  --text-on-interactive-base: #ffffff;
+
+  --border-weak-base: rgba(255,255,255,0.06);
+
+  --button-primary-base: #4F7CFF;
+  --button-secondary-base: #172030;
+  --button-secondary-hover: rgba(255,255,255,0.039);
+  --button-ghost-hover: rgba(255,255,255,0.031);
+  --button-ghost-hover2: rgba(255,255,255,0.059);
+}
+
+[data-vrax-shell] {
+  background-color: var(--vrax-bg);
+  color: var(--vrax-text);
+}
+
+/* Force dark base on every surface the OpenCode session page renders */
+html,
+body,
+#root {
+  background-color: #0A0C10 !important;
+  color: #D1D9E3;
+}
+
+/* Override Tailwind bg-background-* classes — these are used by the upstream
+   OpenCode session page and must be dark regardless of the CSS variable cascade. */
+.bg-background-base        { background-color: #0D1117 !important; }
+.bg-background-weak        { background-color: #111722 !important; }
+.bg-background-strong      { background-color: #0A0C10 !important; }
+.bg-background-stronger    { background-color: #080A0E !important; }
+.bg-background-base\/50    { background-color: rgba(13,17,23,0.5) !important; }
+
+/* Text overrides so content stays readable on the dark surface */
+.text-text-base   { color: rgba(255,255,255,0.72) !important; }
+.text-text-weak   { color: rgba(255,255,255,0.44) !important; }
+.text-text-weaker { color: rgba(255,255,255,0.28) !important; }
+.text-text-strong { color: rgba(255,255,255,0.93) !important; }
+
+/* Input overrides */
+.bg-input-base  { background-color: #111722 !important; }
+.bg-input-hover { background-color: #172030 !important; }
+
+/* Surface overrides — debug bar and raised panels */
+.bg-surface-raised-stronger-non-alpha { background-color: #172030 !important; }
+.bg-surface-raised-stronger           { background-color: rgba(255,255,255,0.129) !important; }
+.bg-surface-raised-strong             { background-color: rgba(255,255,255,0.078) !important; }
+.bg-surface-raised-base               { background-color: rgba(255,255,255,0.05) !important; }
+.border-border-base                   { border-color: rgba(255,255,255,0.06) !important; }
+.text-text-strong                     { color: rgba(255,255,255,0.93) !important; }
+
+@font-face {
+  font-family: "JetBrainsMono Nerd Font Mono";
+  src: url("/assets/JetBrainsMonoNerdFontMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/Inter.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@layer components {
+  @keyframes vrax-pulse-kf {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 50%, transparent);
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+  .vrax-pulse {
+    animation: vrax-pulse-kf 1.6s ease-in-out infinite;
+  }
+
+  @keyframes session-progress-whip {
+    0% {
+      clip-path: inset(0 100% 0 0 round 999px);
+      animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    48% {
+      clip-path: inset(0 0 0 0 round 999px);
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    100% {
+      clip-path: inset(0 0 0 100% round 999px);
+    }
+  }
+
+  [data-component="session-progress"] {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 220ms ease-out;
+  }
+
+  [data-component="session-progress"][data-state="hiding"] {
+    opacity: 0;
+  }
+
+  [data-component="session-progress-bar"] {
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    clip-path: inset(0 100% 0 0 round 999px);
+    will-change: clip-path;
+  }
+
+  [data-component="getting-started"] {
+    container-type: inline-size;
+    container-name: getting-started;
+  }
+
+  [data-component="dropdown-menu-content"].desktop-app-menu,
+  [data-component="dropdown-menu-sub-content"].desktop-app-menu {
+    min-width: 160px;
+    padding: 2px;
+  }
+
+  [data-component="dropdown-menu-content"].desktop-app-menu {
+    width: 160px;
+  }
+
+  [data-component="dropdown-menu-sub-content"].desktop-app-menu {
+    width: max-content;
+    min-width: 240px;
+    max-width: min(320px, calc(100vw - 24px));
+  }
+
+  [data-component="dropdown-menu-content"].desktop-app-menu [data-slot="dropdown-menu-group-label"] {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    font-size: var(--font-size-x-small);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    color: var(--text-weak);
+  }
+
+  [data-component="dropdown-menu-content"].desktop-app-menu [data-slot="dropdown-menu-item"],
+  [data-component="dropdown-menu-content"].desktop-app-menu [data-slot="dropdown-menu-sub-trigger"],
+  [data-component="dropdown-menu-sub-content"].desktop-app-menu [data-slot="dropdown-menu-item"],
+  [data-component="dropdown-menu-sub-content"].desktop-app-menu [data-slot="dropdown-menu-sub-trigger"] {
+    min-height: 28px;
+    padding: 0 12px;
+    gap: 8px;
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+  }
+
+  [data-component="dropdown-menu-content"].desktop-app-menu [data-slot="dropdown-menu-item-label"],
+  [data-component="dropdown-menu-sub-content"].desktop-app-menu [data-slot="dropdown-menu-item-label"] {
+    white-space: nowrap;
+  }
+
+  [data-slot="desktop-app-menu-keybind"] {
+    margin-left: auto;
+    color: var(--text-weak);
+    font-size: var(--font-size-x-small);
+    font-weight: var(--font-weight-regular);
+    white-space: nowrap;
+  }
+
+  [data-slot="desktop-app-menu-chevron"] {
+    display: flex;
+    margin-left: auto;
+    color: var(--icon-base);
+  }
+
+  [data-component="getting-started-actions"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* gap-3 */
+  }
+
+  [data-component="getting-started-actions"] > [data-component="button"] {
+    width: 100%;
+  }
+
+  @container getting-started (min-width: 17rem) {
+    [data-component="getting-started-actions"] {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    [data-component="getting-started-actions"] > [data-component="button"] {
+      width: auto;
+    }
+  }
+
+  [data-slot="titlebar-update-loader"] {
+    display: block;
+    flex-shrink: 0;
+    margin: 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, var(--v2-icon-icon-accent) 30%, transparent);
+    border-top-color: var(--v2-icon-icon-accent);
+    animation: titlebar-update-loader-spin 0.67s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="titlebar-update-loader"] {
+      animation: none;
+    }
+  }
+
+  @keyframes titlebar-update-loader-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ── VRAX session view ─────────────────────────────────────────────────────
+     The OpenCode <Session /> component renders inside .vrax-session-wrap.
+     Force VRAX dark theme on every surface and hide provider/model chrome
+     that belongs to the OpenCode UI shell, not the VRAX operator shell.
+  */
+  .vrax-session-wrap {
+    color-scheme: dark;
+  }
+
+  /* Kill the old OpenCode sidebar rail (left project list) */
+  .vrax-session-wrap [data-component="sidebar-rail"],
+  .vrax-session-wrap [data-component="sidebar-panel"] {
+    display: none !important;
+  }
+
+  /* Force session surfaces to VRAX dark tokens */
+  .vrax-session-wrap [data-component="session"],
+  .vrax-session-wrap [data-component="session-layout"],
+  .vrax-session-wrap [class*="session-layout"] {
+    background: #0D1117 !important;
+  }
+
+  /* Titlebar / top chrome inside the session — hide it, TopBar already handles this */
+  .vrax-session-wrap [data-component="titlebar"] {
+    display: none !important;
+  }
+
+  /* Model / provider pickers in the composer — style to match VRAX */
+  .vrax-session-wrap [data-component="select-trigger"],
+  .vrax-session-wrap [data-component="model-select"] {
+    background: rgba(255,255,255,0.04) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.45) !important;
+    font-size: 11px !important;
+  }
+
+  /* Message timeline area */
+  .vrax-session-wrap [data-component="message-timeline"],
+  .vrax-session-wrap [data-component="session-messages"] {
+    background: #0D1117 !important;
+  }
+
+  /* Composer / input region */
+  .vrax-session-wrap [data-component="session-composer"],
+  .vrax-session-wrap [data-component="composer-region"],
+  .vrax-session-wrap [data-component="session-composer-region"] {
+    background: #111722 !important;
+    border-top-color: rgba(255,255,255,0.06) !important;
+  }
+
+  /* New session placeholder */
+  .vrax-session-wrap [data-component="new-session"] {
+    background: #0D1117 !important;
+  }
+}
