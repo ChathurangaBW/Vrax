@@ -1,0 +1,267 @@
+{
+  "$schema": "https://council-ida-mcp.ai/council-state.json",
+  "version": "2.0",
+  "description": "Per-session council state v2.0 — stigmergic. Tracks phases, blackboard, campaign state, consensus, and checkpoints. Decoupled from the append-only blackboard.json (now in templates/). Use this file for phase status; use blackboard.json for findings; use campaign_state.json for orchestrator cursors and cleanup queue.",
+
+  "session_id": "",
+  "campaign_id": "",
+  "created_at": "",
+  "updated_at": "",
+
+  "target_binary": {
+    "path": "",
+    "name": "",
+    "sha256": "",
+    "format": "",
+    "arch": "",
+    "image_base": "",
+    "entry_point": "",
+    "size_bytes": 0
+  },
+
+  "pipeline": {
+    "mode": "",
+    "playbook": "",
+    "status": "idle",
+    "current_phase": "0_check",
+    "phases_completed": [],
+    "iteration": 0,
+    "max_iterations": 10
+  },
+
+  "mcp_health": {
+    "ida_pro_mcp": {
+      "reachable": false,
+      "url": "http://127.0.0.1:13337",
+      "idb_path": "",
+      "binary_loaded": false,
+      "last_check_at": ""
+    },
+    "binary_ninja_mcp": {
+      "reachable": false,
+      "url": "http://localhost:9009",
+      "bndb_path": "",
+      "binary_loaded": false,
+      "platform": "",
+      "last_check_at": ""
+    }
+  },
+
+  "phases": {
+    "0_check": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "ida_mcp_reachable": false,
+        "bn_mcp_reachable": false,
+        "binary_loaded_ida": false,
+        "binary_loaded_bn": false,
+        "errors": []
+      }
+    },
+    "0.5_research": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "knowledge_base_report_path": "",
+        "techniques_loaded": [],
+        "cves_found": [],
+        "exploit_db_refs": [],
+        "ready_for_mapping": false,
+        "notes": ""
+      }
+    },
+    "1_mapping": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "function_count": 0,
+        "import_count": 0,
+        "mitigations": {
+          "aslr": false,
+          "dep": false,
+          "cfg": false,
+          "stack_cookies": false,
+          "relro": "none",
+          "seh": false,
+          "fortify": false
+        },
+        "attack_surface": [],
+        "license_checks": [],
+        "validation_algorithm": "",
+        "patch_points": [],
+        "high_risk_imports": [],
+        "verdict": "SAFE|VULNERABLE|NEEDS_DEEPER_ANALYSIS",
+        "confidence": 0.0,
+        "dissent": "",
+        "notes": ""
+      }
+    },
+    "2_vulnerability": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "vuln_type": "",
+        "vuln_class": "",
+        "location": "",
+        "crash_instruction": {
+          "address": 0,
+          "mnemonic": "",
+          "disasm": ""
+        },
+        "confidence": 0.0,
+        "bad_chars": [],
+        "padding_length": 0,
+        "constraints": {
+          "max_size": 0,
+          "charset": "",
+          "alignment": 0
+        },
+        "rip_control": {
+          "proven": false,
+          "method": "",
+          "offset_to_rip": 0
+        },
+        "witness_snippet": "",
+        "notes": ""
+      }
+    },
+    "2.5_zero_day_hunt": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "zero_day_findings": [],
+        "vulnerabilities": [],
+        "exploit_chains": [],
+        "mitigation_bypasses": [],
+        "novel_techniques": [],
+        "cvss_assessments": [],
+        "poc_validation": {
+          "total_discovered": 0,
+          "poc_successful": 0,
+          "poc_failed": 0,
+          "ready_for_exploit": false
+        },
+        "notes": ""
+      }
+    },
+    "3_exploitation": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "patch_points": [],
+        "keygen_algorithm": "",
+        "harness_source_path": "",
+        "harness_binary_path": "",
+        "harness_compiled": false,
+        "rop_chain": [],
+        "shellcode": "",
+        "patcher_source_path": "",
+        "patcher_binary_path": "",
+        "keygen_source_path": "",
+        "keygen_binary_path": "",
+        "patches_applied": [],
+        "reversible": false,
+        "notes": ""
+      }
+    },
+    "4_verification": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "runs": [],
+        "pass_count": 0,
+        "fail_count": 0,
+        "pass_at_3": 0.0,
+        "pass_caret_3": false,
+        "pass_caret_3_summary": "",
+        "evidence_paths": [],
+        "telemetry_path": "",
+        "rip_expected": "",
+        "rip_actual": "",
+        "exception_code": "",
+        "verdict": "PASS|FAIL|PARTIAL",
+        "notes": ""
+      }
+    },
+    "5_report": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "report_path": "",
+        "executive_summary": "",
+        "cvss_score": 0.0,
+        "artifacts": [],
+        "notes": ""
+      }
+    },
+    "uac_bypass_findings": {
+      "status": "pending",
+      "started_at": "",
+      "completed_at": "",
+      "result": {
+        "candidates": [],
+        "validated": 0,
+        "failed": 0,
+        "poc_results": "",
+        "poc_report": "",
+        "master_list": "",
+        "bounty_report": "",
+        "validation_verdict": "",
+        "ready_for_bounty_report": false,
+        "notes": ""
+      }
+    }
+  },
+
+  "consensus": {
+    "enabled": true,
+    "voters": ["security-analyst", "vuln-isolator", "zero-day-hunter", "differential-analyst", "cve-researcher", "malware-analyst"],
+    "min_voters": 3,
+    "supermajority_threshold": 0.67,
+    "active_votes": [],
+    "verdicts": []
+  },
+
+  "research": {
+    "knowledge_base_report_path": "",
+    "cves_found": [],
+    "exploit_db_refs": [],
+    "techniques_used": [],
+    "knowledge_base_refs": []
+  },
+
+  "checkpoints": [],
+
+  "approvals": {
+    "pending": [],
+    "granted": [],
+    "denied": []
+  },
+
+  "artifacts": {
+    "reports": [],
+    "harnesses": [],
+    "patchers": [],
+    "keygens": [],
+    "yara_rules": [],
+    "iocs": [],
+    "rop_chains": []
+  },
+
+  "errors": [],
+
+  "exit_condition": {
+    "type": "none",
+    "reason": "",
+    "decided_at": ""
+  }
+}

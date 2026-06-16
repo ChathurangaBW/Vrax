@@ -1,129 +1,197 @@
 <p align="center">
-  <a href="https://opencode.ai">
-    <picture>
-      <source srcset="packages/console/app/src/asset/logo-ornate-dark.svg" media="(prefers-color-scheme: dark)">
-      <source srcset="packages/console/app/src/asset/logo-ornate-light.svg" media="(prefers-color-scheme: light)">
-      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="OpenCode logo">
-    </picture>
-  </a>
-</p>
-<p align="center">The open source AI coding agent.</p>
-<p align="center">
-  <a href="https://opencode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/opencode-ai"><img alt="npm" src="https://img.shields.io/npm/v/opencode-ai?style=flat-square" /></a>
-  <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
+  <img src="docs/screenshots/page-blackboard.png" alt="VRAX — Autonomous RE AI Swarm" width="800">
 </p>
 
-<p align="center">
-  <a href="README.md">English</a> |
-  <a href="README.zh.md">简体中文</a> |
-  <a href="README.zht.md">繁體中文</a> |
-  <a href="README.ko.md">한국어</a> |
-  <a href="README.de.md">Deutsch</a> |
-  <a href="README.es.md">Español</a> |
-  <a href="README.fr.md">Français</a> |
-  <a href="README.it.md">Italiano</a> |
-  <a href="README.da.md">Dansk</a> |
-  <a href="README.ja.md">日本語</a> |
-  <a href="README.pl.md">Polski</a> |
-  <a href="README.ru.md">Русский</a> |
-  <a href="README.bs.md">Bosanski</a> |
-  <a href="README.ar.md">العربية</a> |
-  <a href="README.no.md">Norsk</a> |
-  <a href="README.br.md">Português (Brasil)</a> |
-  <a href="README.th.md">ไทย</a> |
-  <a href="README.tr.md">Türkçe</a> |
-  <a href="README.uk.md">Українська</a> |
-  <a href="README.bn.md">বাংলা</a> |
-  <a href="README.gr.md">Ελληνικά</a> |
-  <a href="README.vi.md">Tiếng Việt</a>
-</p>
+<h1 align="center">VRAX</h1>
+<p align="center"><strong>Autonomous Reverse Engineering AI Swarm</strong></p>
+<p align="center">Multi-agent binary analysis framework — council orchestrator, blackboard stigmergy, pheromone scoring</p>
 
-[![OpenCode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://opencode.ai)
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Bun-1.3-FBECDE?style=flat-square&logo=bun" alt="Bun">
+  <img src="https://img.shields.io/badge/Electron-32-47848F?style=flat-square&logo=electron" alt="Electron">
+  <img src="https://img.shields.io/badge/MCP-IDA%20Pro%20%2B%20Binary%20Ninja-red?style=flat-square" alt="MCP">
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
+</p>
 
 ---
 
-### Installation
+## Overview
 
-```bash
-# YOLO
-curl -fsSL https://opencode.ai/install | bash
+VRAX is a fully autonomous reverse engineering platform built on a **multi-agent AI swarm**. The council orchestrator coordinates specialized agents that deposit findings onto a shared blackboard using pheromone-weighted stigmergy — the same coordination mechanism used by ant colonies.
 
-# Package managers
-npm i -g opencode-ai@latest        # or bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS and Linux (recommended, always up to date)
-brew install opencode              # macOS and Linux (official brew formula, updated less)
-sudo pacman -S opencode            # Arch Linux (Stable)
-paru -S opencode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Any OS
-nix run nixpkgs#opencode           # or github:anomalyco/opencode for latest dev branch
-```
-
-> [!TIP]
-> Remove versions older than 0.1.x before installing.
-
-### Desktop App (BETA)
-
-OpenCode is also available as a desktop application. Download directly from the [releases page](https://github.com/anomalyco/opencode/releases) or [opencode.ai/download](https://opencode.ai/download).
-
-| Platform              | Download                           |
-| --------------------- | ---------------------------------- |
-| macOS (Apple Silicon) | `opencode-desktop-mac-arm64.dmg`   |
-| macOS (Intel)         | `opencode-desktop-mac-x64.dmg`     |
-| Windows               | `opencode-desktop-windows-x64.exe` |
-| Linux                 | `.deb`, `.rpm`, or `.AppImage`     |
-
-```bash
-# macOS (Homebrew)
-brew install --cask opencode-desktop
-# Windows (Scoop)
-scoop bucket add extras; scoop install extras/opencode-desktop
-```
-
-#### Installation Directory
-
-The install script respects the following priority order for the installation path:
-
-1. `$OPENCODE_INSTALL_DIR` - Custom installation directory
-2. `$XDG_BIN_DIR` - XDG Base Directory Specification compliant path
-3. `$HOME/bin` - Standard user binary directory (if it exists or can be created)
-4. `$HOME/.opencode/bin` - Default fallback
-
-```bash
-# Examples
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
-```
-
-### Agents
-
-OpenCode includes two built-in agents you can switch between with the `Tab` key.
-
-- **build** - Default, full-access agent for development work
-- **plan** - Read-only agent for analysis and code exploration
-  - Denies file edits by default
-  - Asks permission before running bash commands
-  - Ideal for exploring unfamiliar codebases or planning changes
-
-Also included is a **general** subagent for complex searches and multistep tasks.
-This is used internally and can be invoked using `@general` in messages.
-
-Learn more about [agents](https://opencode.ai/docs/agents).
-
-### Documentation
-
-For more info on how to configure OpenCode, [**head over to our docs**](https://opencode.ai/docs).
-
-### Contributing
-
-If you're interested in contributing to OpenCode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.
-
-### Building on OpenCode
-
-If you are working on a project that's related to OpenCode and is using "opencode" as part of its name, for example "opencode-dashboard" or "opencode-mobile", please add a note to your README to clarify that it is not built by the OpenCode team and is not affiliated with us in any way.
+Binary analysis runs entirely on autopilot: load a target, launch the pipeline, and the swarm produces prioritized vulnerability findings with full evidence trails.
 
 ---
 
-**Join our community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+## Screenshots
+
+| Blackboard (live findings) | Evidence Chain |
+|---|---|
+| ![Blackboard](docs/screenshots/page-blackboard.png) | ![Evidence](docs/screenshots/page-evidence.png) |
+
+| Campaign Manager | Swarm Status |
+|---|---|
+| ![Campaigns](docs/screenshots/page-campaigns.png) | ![Swarm](docs/screenshots/page-swarm.png) |
+
+| Binary Overview | PE Sections |
+|---|---|
+| ![Overview](docs/screenshots/page-overview.png) | ![Sections](docs/screenshots/page-sections.png) |
+
+| Import Table | Export Table |
+|---|---|
+| ![Imports](docs/screenshots/page-imports.png) | ![Exports](docs/screenshots/page-exports.png) |
+
+| Analysis Pipeline | Reports |
+|---|---|
+| ![Pipeline](docs/screenshots/page-pipeline.png) | ![Reports](docs/screenshots/page-reports.png) |
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    VRAX Council Orchestrator                 │
+│              (coordinates all specialized agents)            │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+          ┌────────────────┼────────────────┐
+          ▼                ▼                ▼
+  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+  │  security-   │ │    vuln-     │ │  zero-day-   │
+  │   analyst    │ │   isolator   │ │    hunter    │
+  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘
+         │                │                │
+         ▼                ▼                ▼
+┌────────────────────────────────────────────────────┐
+│                  BLACKBOARD (stigmergy)             │
+│  Findings deposited with pheromone weights φ 0–1   │
+│  Decay 5%/iteration · Council reads + prioritizes  │
+└────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│   harness-engineer agent    │  ← compiles PoC harness
+│   (auto-triage & exploit)   │
+└─────────────────────────────┘
+```
+
+---
+
+## Agent Roles
+
+| Agent | Phase | Role |
+|---|---|---|
+| `council-orchestrator` | 0 | Master coordinator — dispatches agents, reads blackboard, sets priorities |
+| `knowledge-base` | 0.5 | Research brain — CVE/PoC/KEV lookup before any analysis starts |
+| `security-analyst` | 1 | Attack surface mapping — pre-auth entry points, parser lanes |
+| `vuln-isolator` | 2 | Vulnerability classification — BOF, UAF, format string |
+| `zero-day-hunter` | 3 | Deep heap/vtable analysis — 0day primitive hunting |
+| `harness-engineer` | 4 | PoC harness compilation + crash reproduction |
+
+---
+
+## Blackboard Stigmergy
+
+Agents communicate exclusively through the blackboard — no direct agent-to-agent calls. Each finding carries a **pheromone weight φ (0.0–1.0)**:
+
+- `φ ≥ 0.9` — Council escalates immediately, all agents re-orient
+- `φ 0.7–0.89` — HIGH priority, scheduled next iteration  
+- `φ 0.5–0.69` — MEDIUM, queued
+- `φ < 0.5` — LOW, background
+
+Pheromone decays **5% per iteration**. Stale findings auto-expire. Fresh evidence reinforces weight.
+
+---
+
+## MCP Integration
+
+VRAX connects to binary analysis tools via Model Context Protocol:
+
+| Server | Priority | Tools |
+|---|---|---|
+| `ghidra_mcp` | PRIMARY | Decompilation, cross-refs, data types |
+| `ida_pro_mcp` | SECONDARY | `list_funcs`, `imports`, `decompile`, `xrefs_to`, `stack_frame` |
+| `binary_ninja_mcp` | SECONDARY | `list_binaries`, `get_il`, `decompile_function` |
+
+---
+
+## Repo Structure
+
+```
+vrax/
+├── packages/
+│   ├── core/          TypeScript core library (LSP, streaming, tools)
+│   ├── server/        HTTP + WebSocket server
+│   ├── desktop/       Desktop shell
+│   ├── tui/           Terminal UI (Ink/React)
+│   ├── app/           Web app (SvelteKit)
+│   ├── console/       Cloud console
+│   ├── cli/           CLI entry point
+│   ├── llm/           LLM provider abstraction (Claude, GPT, Gemini, local)
+│   └── ui/            Shared component library
+├── electron/          Electron GUI — council dashboard
+│   ├── main.js        Main process
+│   ├── preload.js     Context bridge
+│   └── renderer/      Dashboard HTML/CSS
+├── agents/            Agent definition files (*.md) + helper scripts
+│   ├── council-orchestrator.md
+│   ├── security-analyst.md
+│   ├── vuln-isolator.md
+│   ├── zero-day-hunter.md
+│   ├── knowledge-base.md
+│   └── v2/            V2 agent system with preambles
+├── infra/             SST v3 (TypeScript) — cloud infra
+├── sdks/              SDK packages
+├── docs/
+│   └── screenshots/   UI screenshots (all pages)
+├── campaigns/         Campaign state files
+└── config/            Shared config
+```
+
+---
+
+## Design System
+
+```css
+--bg0:     #090B0F   /* deep void */
+--bg1:     #0D1117   /* base background */
+--bg2:     #111720   /* card surface */
+--bg3:     #161E2A   /* elevated surface */
+--accent:  #4F7CFF   /* primary blue */
+--purple:  #A78BFA   /* MED severity */
+--red:     #FF4444   /* CRIT severity */
+--amber:   #F59E0B   /* HIGH severity */
+--green:   #22C55E   /* confirmed/clean */
+--muted:   #6B7280   /* secondary text */
+```
+
+---
+
+## Getting Started
+
+**Requirements:** Bun 1.3+, Node 20+, IDA Pro or Binary Ninja (for MCP)
+
+```bash
+# Install dependencies
+bun install
+
+# Start the desktop app
+bun run dev:desktop
+
+# Start the Electron dashboard
+cd electron && npm install && npm start
+
+# Start the web interface
+bun run dev:web
+
+# Run the terminal UI
+bun run dev
+```
+
+---
+
+## License
+
+MIT — See [LICENSE](LICENSE)

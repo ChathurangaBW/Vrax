@@ -32,3 +32,11 @@ UPCOMING_CHANGELOG.md
 logs/
 *.bun-build
 tsconfig.tsbuildinfo
+
+# VRAX build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.exe
+*.out
+agents/_analysis/

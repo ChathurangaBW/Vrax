@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VRAX</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+<!-- ─ Titlebar ──────────────────────────────────────────────── -->
+<div class="titlebar">
+  <div class="tb-icons">
+    <button class="tb-ico close" id="btn-close">&#10005;</button>
+    <button class="tb-ico" id="btn-min">&#8213;</button>
+    <button class="tb-ico" id="btn-max">&#9633;</button>
+  </div>
+  <div class="tb-arrows">
+    <button class="tb-arr">&#8249;</button>
+    <button class="tb-arr">&#8250;</button>
+  </div>
+  <span class="tb-dev">DEV</span>
+</div>
+
+<!-- ─ Nav ───────────────────────────────────────────────────── -->
+<div class="nav">
+  <div class="brand"><div class="tri"></div><span class="brand-name">VRAX</span></div>
+  <div class="nav-item" onclick="navigate('targets')">New Project</div>
+  <div class="nav-item" onclick="openSettings()">Settings</div>
+  <div class="nav-item">TTP Library</div>
+  <div class="nav-item">Toolbox</div>
+  <div class="nav-item">MCP Hub</div>
+  <div class="nav-item">User Guide</div>
+  <div class="nav-right">
+    <div class="status-pill"><span class="status-dot"></span><span>CRASH &nbsp;&middot;&nbsp; 1/4</span></div>
+    <button class="btn-export">Export Report</button>
+  </div>
+</div>
+
+<!-- ─ Campaign bar ──────────────────────────────────────────── -->
+<div class="cambar">
+  <span class="camp-chip">CAMPAIGN</span>
+  <span class="camp-path">campaigns &nbsp;/&nbsp; netcfgd.exe &nbsp;/&nbsp; CRASH-2026-06-13</span>
+</div>
+
+<!-- ─ Workbench ─────────────────────────────────────────────── -->
+<div class="wb">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sb-scroll">
+      <div class="sb-sec">Workspace</div>
+      <div class="ni" id="ni-targets" onclick="navigate('targets')"><span class="ni-ico">&#9679;</span>Targets</div>
+      <div class="ni" id="ni-campaigns" onclick="navigate('campaigns')"><span class="ni-ico">&#9632;</span>Campaigns</div>
+
+      <div class="sb-sec">Analysis</div>
+      <div class="ni" id="ni-overview" onclick="navigate('overview')"><span class="ni-ico">&#9679;</span>Overview</div>
+      <div class="ni" id="ni-sections" onclick="navigate('sections')"><span class="ni-ico">&#8801;</span>Sections</div>
+      <div class="ni" id="ni-imports" onclick="navigate('imports')"><span class="ni-ico">&#8595;</span>Imports</div>
+      <div class="ni" id="ni-exports" onclick="navigate('exports')"><span class="ni-ico">&#8593;</span>Exports</div>
+
+      <div class="sb-sec">Execution</div>
+      <div class="ni" id="ni-pipeline" onclick="navigate('pipeline')"><span class="ni-ico">&#8212;</span>Pipeline</div>
+      <div class="ni" id="ni-swarm" onclick="navigate('swarm')"><span class="ni-ico">&#9675;</span>Swarm</div>
+
+      <div class="sb-sec">Intel</div>
+      <div class="ni" id="ni-evidence" onclick="navigate('evidence')"><span class="ni-ico">&#9679;</span>Evidence</div>
+      <div class="ni active" id="ni-blackboard" onclick="navigate('blackboard')"><span class="ni-ico">&#9632;</span>Blackboard</div>
+
+      <div class="sb-sec">Outputs</div>
+      <div class="ni" id="ni-reports" onclick="navigate('reports')"><span class="ni-ico">&#9632;</span>Reports</div>
+    </div>
+
+    <!-- MCP Servers -->
+    <div class="sb-mcp">
+      <div class="sb-mcp-hdr">
+        <span class="sb-mcp-lbl">MCP Servers</span>
+        <span class="sb-mcp-cnt">3/3</span>
+      </div>
+      <div class="mcp-row">
+        <span class="mcp-dot on"></span>
+        <span class="mcp-name">ghidra_mcp</span>
+        <span class="badge badge-pri">PRI</span>
+        <button class="tog on" onclick="toggleMcp(this)"></button>
+      </div>
+      <div class="mcp-row">
+        <span class="mcp-dot on"></span>
+        <span class="mcp-name">ida_pro_mcp</span>
+        <span class="badge badge-sec">SEC</span>
+        <button class="tog on" onclick="toggleMcp(this)"></button>
+      </div>
+      <div class="mcp-row">
+        <span class="mcp-dot on"></span>
+        <span class="mcp-name">binary_nin...</span>
+        <span class="badge badge-sec">SEC</span>
+        <button class="tog on" onclick="toggleMcp(this)"></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─ Main workspace ────────────────────────────────────────── -->
+  <div class="ws">
+
+    <!-- BLACKBOARD (default) -->
+    <div class="page active" id="page-blackboard">
+      <div class="pg-hdr">
+        <span class="pg-title">Blackboard</span>
+        <span class="pg-sub">&middot; 6 findings</span>
+        <span class="pg-ts">2026-06-13 10:43:45 UTC</span>
+      </div>
+      <div class="filter-row">
+        <div class="fchip sel">ALL</div>
+        <div class="fchip" onclick="filterBB(this,'crit')">CRITICAL <span class="badge-cnt">3</span></div>
+        <div class="fchip" onclick="filterBB(this,'high')">HIGH <span class="badge-cnt">2</span></div>
+        <div class="fchip">MEDIUM <span class="badge-cnt">1</span></div>
+        <div class="fchip">LOW</div>
+        <div class="fchip">INFO</div>
+      </div>
+      <div class="flist" id="bb-list">
+
+        <!-- Finding 1: STACK_BUFFER_OVERFLOW -->
+        <div class="fc fc-crit" id="fc-1">
+          <div class="fc-top" onclick="toggleFC('1')">
+            <div class="fc-row1">
+              <span class="sev sev-c">CRIT</span>
+              <span class="fname">STACK_BUFFER_OVERFLOW</span>
+              <span class="conf">CONFIRMED</span>
+            </div>
+            <div class="fdesc">memcpy into 512B stack buffer with attacker-controlled size &mdash; no bounds check at ParseConfigFrame+0x18</div>
+            <div class="fmeta">
+              <div class="phi"><div class="phi-bar phi-bar-c"></div><span class="phi-val">0.95</span></div>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-agent">vuln-isolator</span>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-time">5930h ago</span>
+            </div>
+          </div>
+          <div class="fc-foot">
+            <span class="f-agents">3 agents</span>
+            <span class="f-expand" onclick="toggleFC('1')">&#9660; expand</span>
+          </div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro decompile &mdash; sub_401af0</div>
+            <div class="term">
+<span class="t-p">ida_pro_mcp</span><span class="t-d">::</span><span class="t-k">decompile</span><span class="t-d">(</span><span class="t-v">0x00401af0</span><span class="t-d">)</span><br>
+<span class="t-ok">void __cdecl ParseConfigFrame(char *src, DWORD srclen)</span><br>
+<span class="t-ok">{</span><br>
+<span class="t-ok">&nbsp;&nbsp;char dest[512];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// &#8592; fixed 512B stack buffer</span><br>
+<span class="t-ok">&nbsp;&nbsp;memcpy(dest, src, srclen);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// &#8592; srclen up to 0xFFFF; no check</span><br>
+<span class="t-ok">&nbsp;&nbsp;ProcessCtrlMsg(dest, srclen);</span><br>
+<span class="t-ok">}</span><br><br>
+<span class="t-p">vuln-isolator</span> <span class="t-k">&#8594;</span> <span class="t-ok">STACK_BUFFER_OVERFLOW confirmed @ +0x18 &bull; RIP control at dest+0x208 (pad=520)</span><br>
+<span class="t-p">zero-day-hunter</span> <span class="t-k">&#8594;</span> <span class="t-ok">ROP chain viable &mdash; 47 usable gadgets in .text &bull; VirtualProtect pivot identified</span>
+            </div>
+            <div class="term-btns">
+              <button class="term-btn">Copy 0x401af0</button>
+              <button class="term-btn">Open in IDA</button>
+              <button class="term-btn">Build harness</button>
+              <button class="term-btn">Add to report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 2: USE_AFTER_FREE -->
+        <div class="fc fc-crit" id="fc-2">
+          <div class="fc-top" onclick="toggleFC('2')">
+            <div class="fc-row1">
+              <span class="sev sev-c">CRIT</span>
+              <span class="fname">USE_AFTER_FREE</span>
+              <span class="conf">CONFIRMED</span>
+            </div>
+            <div class="fdesc">CSessionCtx destructor frees vtbl object; stale pointer reused in async dispatch path</div>
+            <div class="fmeta">
+              <div class="phi"><div class="phi-bar phi-bar-c"></div><span class="phi-val">0.88</span></div>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-agent">zero-day-hunter</span>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-time">&lt;1m</span>
+            </div>
+          </div>
+          <div class="fc-foot">
+            <span class="f-agents">2 agents</span>
+            <span class="f-expand" onclick="toggleFC('2')">&#9660; expand</span>
+          </div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro xrefs &mdash; CSessionCtx destructor</div>
+            <div class="term">
+<span class="t-p">ida_pro_mcp</span><span class="t-d">::</span><span class="t-k">xrefs_to</span><span class="t-d">(</span><span class="t-v">"CSessionCtx::~CSessionCtx"</span><span class="t-d">)</span><br>
+<span class="t-ok">&nbsp;[0] 0x004023A0&nbsp;CALL&nbsp;CSessionCtx::~CSessionCtx&nbsp;&nbsp;; freed in error handler</span><br>
+<span class="t-ok">&nbsp;[1] 0x004023C8&nbsp;MOV &nbsp;[g_session], ecx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; &#8592; stale ptr NOT zeroed</span><br>
+<span class="t-ok">&nbsp;[2] 0x00402F10&nbsp;MOV &nbsp;eax, [g_session]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; dangling deref</span><br>
+<span class="t-ok">&nbsp;[3] 0x00402F14&nbsp;CALL&nbsp;[eax+0x0C]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; vtbl call &#8592; controlled</span><br><br>
+<span class="t-p">zero-day-hunter</span> <span class="t-k">&#8594;</span> <span class="t-ok">UAF confirmed &bull; vtbl hijack via tcache heap spray achievable (8-byte aligned slots)</span>
+            </div>
+            <div class="term-btns">
+              <button class="term-btn">Copy 0x402F14</button>
+              <button class="term-btn">Open in IDA</button>
+              <button class="term-btn">Build harness</button>
+              <button class="term-btn">Add to report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 3: HEAP_OVERFLOW -->
+        <div class="fc fc-crit" id="fc-3">
+          <div class="fc-top" onclick="toggleFC('3')">
+            <div class="fc-row1">
+              <span class="sev sev-c">CRIT</span>
+              <span class="fname">HEAP_OVERFLOW</span>
+              <span class="conf">CONFIRMED</span>
+            </div>
+            <div class="fdesc">ReadNetBlock heap alloc uses field from packet header as size; overflows into adjacent chunk metadata</div>
+            <div class="fmeta">
+              <div class="phi"><div class="phi-bar phi-bar-c"></div><span class="phi-val">0.91</span></div>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-agent">zero-day-hunter</span>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-time">14m ago</span>
+            </div>
+          </div>
+          <div class="fc-foot">
+            <span class="f-agents">2 agents</span>
+            <span class="f-expand" onclick="toggleFC('3')">&#9660; expand</span>
+          </div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro decompile &mdash; sub_403C20</div>
+            <div class="term">
+<span class="t-p">ida_pro_mcp</span><span class="t-d">::</span><span class="t-k">decompile</span><span class="t-d">(</span><span class="t-v">0x00403C20</span><span class="t-d">)</span><br>
+<span class="t-ok">void __cdecl ReadNetBlock(PKT_HDR *hdr)</span><br>
+<span class="t-ok">{</span><br>
+<span class="t-ok">&nbsp;&nbsp;DWORD alloc_sz = hdr-&gt;block_len + 16;  // &#8592; no overflow check</span><br>
+<span class="t-ok">&nbsp;&nbsp;char *buf = (char *)HeapAlloc(hHeap, 0, alloc_sz);</span><br>
+<span class="t-ok">&nbsp;&nbsp;memcpy(buf, hdr-&gt;data, hdr-&gt;data_len); // &#8592; data_len &gt; alloc_sz</span><br>
+<span class="t-ok">}</span><br><br>
+<span class="t-p">vuln-isolator</span> <span class="t-k">&#8594;</span> <span class="t-ok">HEAP_OVERFLOW @ memcpy site &bull; overwrites next chunk FLINK/BLINK &mdash; arbitrary write primitive</span>
+            </div>
+            <div class="term-btns">
+              <button class="term-btn">Copy 0x403C20</button>
+              <button class="term-btn">Open in IDA</button>
+              <button class="term-btn">Build harness</button>
+              <button class="term-btn">Add to report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 4: ATTACK_SURFACE_FOUND -->
+        <div class="fc fc-high" id="fc-4">
+          <div class="fc-top" onclick="toggleFC('4')">
+            <div class="fc-row1">
+              <span class="sev sev-h">HIGH</span>
+              <span class="fname">ATTACK_SURFACE_FOUND</span>
+              <span class="conf">CONFIRMED</span>
+            </div>
+            <div class="fdesc">4 network-reachable parser entry points accepting untrusted frames &mdash; no auth gate</div>
+            <div class="fmeta">
+              <div class="phi"><div class="phi-bar phi-bar-h"></div><span class="phi-val">0.78</span></div>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-agent">security-analyst</span>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-time">5930h ago</span>
+            </div>
+          </div>
+          <div class="fc-foot">
+            <span class="f-agents">2 agents</span>
+            <span class="f-expand" onclick="toggleFC('4')">&#9660; expand</span>
+          </div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro callgraph &mdash; attack surface</div>
+            <div class="term">
+<span class="t-p">ida_pro_mcp</span><span class="t-d">::</span><span class="t-k">callgraph</span><span class="t-d">(</span><span class="t-v">"ParseConfigFrame"</span><span class="t-d">)</span><br>
+<span class="t-ok">[0] DispatchLoop()    &rarr; ParseConfigFrame()  ; recv() &rarr; parse, no auth</span><br>
+<span class="t-ok">[1] HandleCtrlCmd()   &rarr; ParseConfigFrame()  ; UDP port 9321</span><br>
+<span class="t-ok">[2] ProcessDiagFrame()&rarr; ParseConfigFrame()  ; ICMP ext header</span><br>
+<span class="t-ok">[3] ReadNetBlock()    &rarr; ParseConfigFrame()  ; TCP session splice</span><br><br>
+<span class="t-p">security-analyst</span> <span class="t-k">&#8594;</span> <span class="t-ok">All 4 paths reachable pre-auth &mdash; CVSS attack vector: N / complexity: L</span>
+            </div>
+            <div class="term-btns">
+              <button class="term-btn">View callgraph</button>
+              <button class="term-btn">Open in IDA</button>
+              <button class="term-btn">Add to report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 5: INTEGER_OVERFLOW -->
+        <div class="fc fc-high" id="fc-5">
+          <div class="fc-top" onclick="toggleFC('5')">
+            <div class="fc-row1">
+              <span class="sev sev-h">HIGH</span>
+              <span class="fname">INTEGER_OVERFLOW</span>
+              <span class="conf">CONFIRMED</span>
+            </div>
+            <div class="fdesc">block_len + 16 wraps to 0 when block_len = 0xFFFFFFF0 &mdash; HeapAlloc(0) returns non-null; subsequent memcpy corrupts heap</div>
+            <div class="fmeta">
+              <div class="phi"><div class="phi-bar phi-bar-h"></div><span class="phi-val">0.74</span></div>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-agent">security-analyst</span>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-time">22m ago</span>
+            </div>
+          </div>
+          <div class="fc-foot">
+            <span class="f-agents">2 agents</span>
+            <span class="f-expand" onclick="toggleFC('5')">&#9660; expand</span>
+          </div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro disasm &mdash; alloc size arithmetic</div>
+            <div class="term">
+<span class="t-p">ida_pro_mcp</span><span class="t-d">::</span><span class="t-k">disasm</span><span class="t-d">(</span><span class="t-v">0x00403C20</span><span class="t-d">, </span><span class="t-v">0x10</span><span class="t-d">)</span><br>
+<span class="t-ok">403C20:&nbsp;8B 45 08&nbsp;&nbsp;&nbsp;&nbsp;MOV  eax, [ebp+hdr]</span><br>
+<span class="t-ok">403C23:&nbsp;8B 48 04&nbsp;&nbsp;&nbsp;&nbsp;MOV  ecx, [eax+4]&nbsp;&nbsp;&nbsp;; block_len</span><br>
+<span class="t-ok">403C26:&nbsp;83 C1 10&nbsp;&nbsp;&nbsp;&nbsp;ADD  ecx, 10h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; &#8592; wraps if block_len &gt;= 0xFFFFFFF0</span><br>
+<span class="t-ok">403C29:&nbsp;51&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUSH ecx</span><br>
+<span class="t-ok">403C2A:&nbsp;FF 15 ..&nbsp;&nbsp;&nbsp;&nbsp;CALL HeapAlloc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; alloc_sz=0 &#8592; dangerous</span><br><br>
+<span class="t-p">security-analyst</span> <span class="t-k">&#8594;</span> <span class="t-ok">INTEGER_OVERFLOW chains directly into HEAP_OVERFLOW &mdash; single malformed packet triggers both</span>
+            </div>
+            <div class="term-btns">
+              <button class="term-btn">Copy 0x403C26</button>
+              <button class="term-btn">Open in IDA</button>
+              <button class="term-btn">Add to report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 6: FORMAT_STRING_BUG -->
+        <div class="fc fc-med" id="fc-6">
+          <div class="fc-top" onclick="toggleFC('6')">
+            <div class="fc-row1">
+              <span class="sev sev-m">MED</span>
+              <span class="fname">FORMAT_STRING_BUG</span>
+              <span class="conf">CONFIRMED</span>
+            </div>
+            <div class="fdesc">LogDiagEvent passes attacker-influenced buffer directly to sprintf &mdash; info-leak or write primitive</div>
+            <div class="fmeta">
+              <div class="phi"><div class="phi-bar phi-bar-m"></div><span class="phi-val">0.62</span></div>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-agent">vuln-isolator</span>
+              <span class="dot-sep">&middot;</span>
+              <span class="f-time">8m ago</span>
+            </div>
+          </div>
+          <div class="fc-foot">
+            <span class="f-agents">2 agents</span>
+            <span class="f-expand" onclick="toggleFC('6')">&#9660; expand</span>
+          </div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro decompile &mdash; LogDiagEvent</div>
+            <div class="term">
+<span class="t-p">ida_pro_mcp</span><span class="t-d">::</span><span class="t-k">decompile</span><span class="t-d">(</span><span class="t-v">"LogDiagEvent"</span><span class="t-d">)</span><br>
+<span class="t-ok">void __cdecl LogDiagEvent(char *msg)</span><br>
+<span class="t-ok">{</span><br>
+<span class="t-ok">&nbsp;&nbsp;char logbuf[256];</span><br>
+<span class="t-ok">&nbsp;&nbsp;sprintf(logbuf, msg);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// &#8592; msg is attacker-controlled</span><br>
+<span class="t-ok">&nbsp;&nbsp;WriteEventLog(logbuf);</span><br>
+<span class="t-ok">}</span><br><br>
+<span class="t-p">vuln-isolator</span> <span class="t-k">&#8594;</span> <span class="t-ok">FORMAT_STRING confirmed &bull; %x leak stack @ offset 4 &bull; %n write in range without GS</span>
+            </div>
+            <div class="term-btns">
+              <button class="term-btn">Copy "LogDiagEvent"</button>
+              <button class="term-btn">Open in IDA</button>
+              <button class="term-btn">Add to report</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /flist -->
+    </div><!-- /blackboard -->
+
+    <!-- EVIDENCE -->
+    <div class="page" id="page-evidence">
+      <div class="pg-hdr">
+        <span class="pg-title">Evidence</span>
+        <span class="pg-sub">&middot; 6 findings</span>
+        <span class="pg-ts">2026-06-13 10:43:45 UTC</span>
+      </div>
+      <div class="filter-row">
+        <div class="fchip sel">ALL <span class="badge-cnt">6</span></div>
+        <div class="fchip">CRITICAL <span class="badge-cnt">3</span></div>
+        <div class="fchip">HIGH <span class="badge-cnt">2</span></div>
+        <div class="fchip">MEDIUM <span class="badge-cnt">1</span></div>
+        <div class="fchip">LOW</div>
+        <div class="fchip">INFO</div>
+      </div>
+      <div class="flist">
+        <div class="fc fc-crit" id="fc-e1">
+          <div class="fc-top" onclick="toggleFC('e1')">
+            <div class="fc-row1"><span class="sev sev-c">CRIT</span><span class="fname">STACK_BUFFER_OVERFLOW</span><span class="conf">CONFIRMED</span></div>
+            <div class="fdesc">ParseConfigFrame &mdash; 512B stack buf, memcpy srclen=0xFFFF &mdash; EIP control at offset 520, bad chars 0x00 0x0a 0x0d</div>
+            <div class="fmeta"><div class="phi"><div class="phi-bar phi-bar-c"></div><span class="phi-val">0.95</span></div><span class="dot-sep">&middot;</span><span class="f-agent">vuln-isolator</span><span class="dot-sep">&middot;</span><span class="f-time">&lt;1m</span></div>
+          </div>
+          <div class="fc-foot"><span class="f-agents">3 agents</span><span class="f-expand" onclick="toggleFC('e1')">&#9660; expand</span></div>
+          <div class="fc-body">
+            <div class="term-lbl">Crash harness output</div>
+            <div class="term"><span class="t-p">harness-engineer</span> <span class="t-k">&#8594;</span> <span class="t-ok">EIP=0x41414141 @ offset 520 &bull; ret2libc chain: VirtualProtect+shellcode confirmed 3/3 runs</span></div>
+          </div>
+        </div>
+        <div class="fc fc-crit" id="fc-e2">
+          <div class="fc-top" onclick="toggleFC('e2')">
+            <div class="fc-row1"><span class="sev sev-c">CRIT</span><span class="fname">USE_AFTER_FREE</span><span class="conf">CONFIRMED</span></div>
+            <div class="fdesc">CSessionCtx vtbl hijack via tcache heap spray &mdash; CALL [eax+0x0C] redirected to attacker shellcode</div>
+            <div class="fmeta"><div class="phi"><div class="phi-bar phi-bar-c"></div><span class="phi-val">0.88</span></div><span class="dot-sep">&middot;</span><span class="f-agent">zero-day-hunter</span><span class="dot-sep">&middot;</span><span class="f-time">&lt;1m</span></div>
+          </div>
+          <div class="fc-foot"><span class="f-agents">2 agents</span><span class="f-expand" onclick="toggleFC('e2')">&#9660; expand</span></div>
+          <div class="fc-body">
+            <div class="term-lbl">PoC harness — UAF trigger</div>
+            <div class="term"><span class="t-p">zero-day-hunter</span> <span class="t-k">&#8594;</span> <span class="t-ok">Heap spray 0x0C0C0C0C &rarr; vtbl redirect confirmed &bull; RCE achieved 3/3 &bull; ASLR bypass: partial via heap info-leak</span></div>
+          </div>
+        </div>
+        <div class="fc fc-crit" id="fc-e3">
+          <div class="fc-top" onclick="toggleFC('e3')">
+            <div class="fc-row1"><span class="sev sev-c">CRIT</span><span class="fname">HEAP_OVERFLOW</span><span class="conf">CONFIRMED</span></div>
+            <div class="fdesc">ReadNetBlock &mdash; arbitrary write via chunk FLINK/BLINK overwrite &mdash; HeapAlloc(0) path reachable from UDP port 9321</div>
+            <div class="fmeta"><div class="phi"><div class="phi-bar phi-bar-c"></div><span class="phi-val">0.91</span></div><span class="dot-sep">&middot;</span><span class="f-agent">vuln-isolator</span><span class="dot-sep">&middot;</span><span class="f-time">14m ago</span></div>
+          </div>
+          <div class="fc-foot"><span class="f-agents">2 agents</span><span class="f-expand" onclick="toggleFC('e3')">&#9660; expand</span></div>
+          <div class="fc-body">
+            <div class="term-lbl">Binary Ninja — heap layout analysis</div>
+            <div class="term"><span class="t-p">binary_ninja_mcp</span> <span class="t-k">&#8594;</span> <span class="t-ok">HEAP_OVERFLOW confirmed &bull; arbitrary write primitive &bull; target: .got.plt redirect achievable &bull; 2/3 runs stable</span></div>
+          </div>
+        </div>
+        <div class="fc fc-high" id="fc-e4">
+          <div class="fc-top" onclick="toggleFC('e4')">
+            <div class="fc-row1"><span class="sev sev-h">HIGH</span><span class="fname">ATTACK_SURFACE_FOUND</span><span class="conf">CONFIRMED</span></div>
+            <div class="fdesc">4 pre-auth parser entry points: DispatchLoop, HandleCtrlCmd, ProcessDiagFrame, ReadNetBlock</div>
+            <div class="fmeta"><div class="phi"><div class="phi-bar phi-bar-h"></div><span class="phi-val">0.78</span></div><span class="dot-sep">&middot;</span><span class="f-agent">security-analyst</span><span class="dot-sep">&middot;</span><span class="f-time">5930h ago</span></div>
+          </div>
+          <div class="fc-foot"><span class="f-agents">2 agents</span><span class="f-expand" onclick="toggleFC('e4')">&#9660; expand</span></div>
+          <div class="fc-body">
+            <div class="term-lbl">IDA Pro callgraph</div>
+            <div class="term"><span class="t-p">security-analyst</span> <span class="t-k">&#8594;</span> <span class="t-ok">All 4 paths confirmed pre-auth &bull; CVSS 3.1: AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 9.8 CRITICAL</span></div>
+          </div>
+        </div>
+        <div class="fc fc-high" id="fc-e5">
+          <div class="fc-top" onclick="toggleFC('e5')">
+            <div class="fc-row1"><span class="sev sev-h">HIGH</span><span class="fname">MITIGATION_MAPPED</span><span class="conf">CONFIRMED</span></div>
+            <div class="fdesc">Present: ASLR, DEP, CFG &mdash; absent: STACK_COOKIES, SafeSEH &mdash; exploit difficulty LOW without GS</div>
+            <div class="fmeta"><div class="phi"><div class="phi-bar phi-bar-h"></div><span class="phi-val">0.83</span></div><span class="dot-sep">&middot;</span><span class="f-agent">security-analyst</span><span class="dot-sep">&middot;</span><span class="f-time">&lt;1m</span></div>
+          </div>
+          <div class="fc-foot"><span class="f-agents">2 agents</span><span class="f-expand" onclick="toggleFC('e5')">&#9660; expand</span></div>
+          <div class="fc-body">
+            <div class="term-lbl">Binary Ninja mitigation scan</div>
+            <div class="term"><span class="t-p">binary_ninja_mcp</span> <span class="t-k">&#8594;</span> <span class="t-ok">GS cookie absent in all vuln functions &bull; no SafeSEH &bull; stack canary bypass not required &mdash; exploit complexity: LOW</span></div>
+          </div>
+        </div>
+        <div class="fc fc-med" id="fc-e6">
+          <div class="fc-top" onclick="toggleFC('e6')">
+            <div class="fc-row1"><span class="sev sev-m">MED</span><span class="fname">FORMAT_STRING_BUG</span><span class="conf">CONFIRMED</span></div>
+            <div class="fdesc">LogDiagEvent sprintf(logbuf, msg) &mdash; stack info-leak via %x chain confirmed; %n write possible</div>
+            <div class="fmeta"><div class="phi"><div class="phi-bar phi-bar-m"></div><span class="phi-val">0.62</span></div><span class="dot-sep">&middot;</span><span class="f-agent">vuln-isolator</span><span class="dot-sep">&middot;</span><span class="f-time">8m ago</span></div>
+          </div>
+          <div class="fc-foot"><span class="f-agents">2 agents</span><span class="f-expand" onclick="toggleFC('e6')">&#9660; expand</span></div>
+          <div class="fc-body">
+            <div class="term-lbl">Crash harness — format string probe</div>
+            <div class="term"><span class="t-p">vuln-isolator</span> <span class="t-k">&#8594;</span> <span class="t-ok">%x.%x.%x.%x leaks stack @ offset 4 &bull; return address visible at position 11 &bull; %n write confirmed without GS</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TARGETS -->
+    <div class="page" id="page-targets">
+      <div class="tg-wrap">
+        <div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px;">Select target binary</div>
+        <div style="font-size:11.5px;color:var(--t3);margin-bottom:18px;">Load an EXE, DLL, ELF, or Mach-O to begin analysis</div>
+        <div class="tg-grid">
+          <div class="tg-card"><div class="tg-card-ico">&#128193;</div><div class="tg-card-ttl">Load binary</div><div class="tg-card-txt">Open a binary from your filesystem to start a new campaign</div><button class="btn-tg">Browse files</button></div>
+          <div class="tg-card"><div class="tg-card-ico">&#128194;</div><div class="tg-card-ttl">Scan folder</div><div class="tg-card-txt">Scan a directory for PE/ELF binaries and batch-queue them</div><button class="btn-tg">Browse folder</button></div>
+        </div>
+        <div class="recent-lbl">Recent targets</div>
+        <div class="recent-row" onclick="navigate('blackboard')">netcfgd.exe &mdash; CRASH &mdash; 6 findings &mdash; 2026-06-13</div>
+        <div class="recent-row">pktbroker_x64.dll &mdash; ZERO-DAY &mdash; 4 findings &mdash; 2026-06-11</div>
+        <div class="recent-row">diagsvc_drv.exe &mdash; MALWARE &mdash; 9 findings &mdash; 2026-06-09</div>
+        <div class="recent-row">auditcore.dll &mdash; CRASH &mdash; 2 findings &mdash; 2026-06-07</div>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="page" id="page-pipeline">
+      <div class="pg-hdr"><span class="pg-title">Pipeline</span><span class="pg-sub">&middot; 4 phases</span></div>
+      <div class="pg-content">
+        <div class="list-card" style="border-color:rgba(79,124,255,0.30);background:rgba(79,124,255,0.06);"><div class="ph-cb done" style="margin:0;margin-right:10px;">&#10003;</div><div style="flex:1;"><div style="font-size:12px;color:var(--t1);font-weight:500;">attack surface mapping</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:2px;">security-analyst &middot; completed in 4.2s &middot; 4 entry points found</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">4.2s</span></div>
+        <div class="list-card" style="border-color:rgba(79,124,255,0.40);background:rgba(79,124,255,0.08);"><div class="ph-cb run" style="margin:0;margin-right:10px;">&#8943;</div><div style="flex:1;"><div style="font-size:12px;color:var(--t1);font-weight:500;">vulnerability isolation</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:2px;">vuln-isolator + zero-day-hunter &middot; running... &middot; 3 crits deposited</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--accent);">running...</span></div>
+        <div class="list-card"><div class="ph-cb q" style="margin:0;margin-right:10px;"></div><div style="flex:1;"><div style="font-size:12px;color:var(--t3);font-weight:500;">harness build</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:2px;">harness-engineer &middot; queued &middot; targeting 0x401af0, 0x403C20, 0x402F14</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">queued</span></div>
+        <div class="list-card"><div class="ph-cb q" style="margin:0;margin-right:10px;"></div><div style="flex:1;"><div style="font-size:12px;color:var(--t3);font-weight:500;">consensus vote</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:2px;">all agents &middot; queued &middot; threshold 3/4</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">queued</span></div>
+      </div>
+    </div>
+
+    <!-- SWARM -->
+    <div class="page" id="page-swarm">
+      <div class="pg-hdr"><span class="pg-title">Swarm</span><span class="pg-sub">&middot; 5 agents</span></div>
+      <div class="pg-content">
+        <div class="list-card"><div style="flex:1;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">security-analyst</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">Attack surface mapping &mdash; 4 entry points, CVSS scored</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">&#966;=0.78</span><span style="font-size:10px;color:rgba(255,255,255,0.30);margin-left:10px;">idle</span></div>
+        <div class="list-card"><div style="flex:1;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">vuln-isolator</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">Stack overflow + format string isolation &mdash; bad char map complete</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">&#966;=0.95</span><span style="font-size:10px;color:var(--green);margin-left:10px;">&#9679; running</span></div>
+        <div class="list-card"><div style="flex:1;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">zero-day-hunter</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">UAF + heap overflow &mdash; vtbl hijack confirmed, spray primitive mapped</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">&#966;=0.91</span><span style="font-size:10px;color:var(--green);margin-left:10px;">&#9679; running</span></div>
+        <div class="list-card"><div style="flex:1;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">harness-engineer</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">PoC harness build &mdash; awaiting isolation complete</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">&#966;=0.00</span><span style="font-size:10px;color:rgba(255,255,255,0.18);margin-left:10px;">queued</span></div>
+        <div class="list-card"><div style="flex:1;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">council-orchestrator</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">Phase sequencing &mdash; monitoring blackboard &mdash; decay 5%/iter</div></div><span style="font-size:10px;font-family:var(--mono);color:var(--t4);">&#966;=1.00</span><span style="font-size:10px;color:var(--green);margin-left:10px;">&#9679; running</span></div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="page" id="page-reports">
+      <div class="pg-hdr"><span class="pg-title">Reports</span><span class="pg-sub">&middot; 1 draft</span></div>
+      <div class="pg-content">
+        <div class="list-card" style="cursor:pointer;">
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">CRASH-2026-06-13-netcfgd.pdf</div>
+            <div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:2px;">DRAFT &middot; 6 findings &middot; 3 CRIT &middot; 2 HIGH &middot; 1 MED &middot; phase 1/4 complete</div>
+          </div>
+          <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(245,158,11,0.15);color:var(--amber);">DRAFT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMPAIGNS -->
+    <div class="page" id="page-campaigns">
+      <div class="pg-hdr"><span class="pg-title">Campaigns</span><span class="pg-sub">&middot; 4 campaigns</span></div>
+      <div class="pg-content">
+        <div class="list-card" style="cursor:pointer;" onclick="navigate('blackboard')"><div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;"></div><div style="flex:1;margin-left:8px;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">netcfgd.exe</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:1px;">PE32 x86 &middot; 184KB &middot; 2026-06-13</div></div><span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(79,124,255,0.15);color:var(--accent);">CRASH</span><span style="font-size:10px;font-family:var(--mono);color:var(--red);margin-left:10px;">6 findings</span></div>
+        <div class="list-card"><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div><div style="flex:1;margin-left:8px;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">pktbroker_x64.dll</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:1px;">PE64 x86-64 &middot; 312KB &middot; 2026-06-11</div></div><span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(79,124,255,0.15);color:var(--accent);">ZERO-DAY</span><span style="font-size:10px;font-family:var(--mono);color:var(--amber);margin-left:10px;">4 findings</span></div>
+        <div class="list-card"><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div><div style="flex:1;margin-left:8px;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">diagsvc_drv.exe</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:1px;">PE32 x86 &middot; 97KB &middot; 2026-06-09</div></div><span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(79,124,255,0.15);color:var(--accent);">MALWARE</span><span style="font-size:10px;font-family:var(--mono);color:var(--red);margin-left:10px;">9 findings</span></div>
+        <div class="list-card"><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div><div style="flex:1;margin-left:8px;"><div style="font-size:12px;font-weight:600;font-family:var(--mono);color:var(--t1);">auditcore.dll</div><div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:1px;">PE64 x86-64 &middot; 228KB &middot; 2026-06-07</div></div><span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(79,124,255,0.15);color:var(--accent);">CRASH</span><span style="font-size:10px;font-family:var(--mono);color:var(--t4);margin-left:10px;">2 findings</span></div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="page" id="page-overview">
+      <div class="pg-hdr"><span class="pg-title">Overview</span><span class="pg-sub">&middot; netcfgd.exe</span></div>
+      <div class="pg-content">
+        <div class="ov-grid">
+          <div class="ov-card"><div class="ov-lbl">Binary</div><div class="ov-val mn">netcfgd.exe</div></div>
+          <div class="ov-card"><div class="ov-lbl">Architecture</div><div class="ov-val mn">PE32 x86 (32-bit)</div></div>
+          <div class="ov-card"><div class="ov-lbl">Entry point</div><div class="ov-val mn">0x00401000</div></div>
+          <div class="ov-card"><div class="ov-lbl">Image base</div><div class="ov-val mn">0x00400000</div></div>
+          <div class="ov-card"><div class="ov-lbl">File size</div><div class="ov-val mn">184,320 bytes (180 KB)</div></div>
+          <div class="ov-card"><div class="ov-lbl">Compile time</div><div class="ov-val mn">2024-03-14 09:26:53 UTC</div></div>
+          <div class="ov-card"><div class="ov-lbl">Linker ver.</div><div class="ov-val mn">MSVC 14.38 (VS 2022)</div></div>
+          <div class="ov-card"><div class="ov-lbl">Subsystem</div><div class="ov-val mn">Console (CUI)</div></div>
+          <div class="ov-card"><div class="ov-lbl">Protections</div><div class="ov-val" style="color:var(--amber);">ASLR, DEP, CFG &mdash; no GS, no SafeSEH</div></div>
+          <div class="ov-card"><div class="ov-lbl">Entropy</div><div class="ov-val" style="color:var(--amber);">6.42 / 8.00 (moderate packing)</div></div>
+          <div class="ov-card"><div class="ov-lbl">MD5</div><div class="ov-val mn" style="font-size:9.5px;">a3f82c1d4e6b9071cc25d83ef104b27a</div></div>
+          <div class="ov-card"><div class="ov-lbl">SHA-256</div><div class="ov-val mn" style="font-size:9px;">e5d3...c1f2 (truncated)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTIONS -->
+    <div class="page" id="page-sections">
+      <div class="pg-hdr"><span class="pg-title">PE Sections</span><span class="pg-sub">&middot; 6 sections</span></div>
+      <div class="pg-content">
+        <table class="dt">
+          <thead><tr><th>Name</th><th>VirtAddr</th><th>VirtSize</th><th>RawSize</th><th>Perms</th><th>Entropy</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td class="mn ac">.text</td><td class="mn dm">0x00001000</td><td class="mn">84,992 B</td><td class="mn">85,504 B</td><td>RX</td><td class="mn" style="color:var(--amber);">6.78</td><td class="dm">code</td></tr>
+            <tr><td class="mn ac">.rdata</td><td class="mn dm">0x00016000</td><td class="mn">12,288 B</td><td class="mn">12,288 B</td><td>R</td><td class="mn">4.21</td><td class="dm">const / imports</td></tr>
+            <tr><td class="mn ac">.data</td><td class="mn dm">0x00019000</td><td class="mn">4,096 B</td><td class="mn">4,096 B</td><td>RW</td><td class="mn">1.04</td><td class="dm">globals</td></tr>
+            <tr><td class="mn ac">.bss</td><td class="mn dm">0x0001A000</td><td class="mn">2,048 B</td><td class="mn">0 B</td><td>RW</td><td class="mn">0.00</td><td class="dm">zero-init</td></tr>
+            <tr><td class="mn ac">.rsrc</td><td class="mn dm">0x0001B000</td><td class="mn">52,224 B</td><td class="mn">52,736 B</td><td>R</td><td class="mn">5.33</td><td class="dm">resources</td></tr>
+            <tr><td class="mn ac">.reloc</td><td class="mn dm">0x00028000</td><td class="mn">2,048 B</td><td class="mn">2,048 B</td><td>R</td><td class="mn">3.89</td><td class="dm">relocations</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- IMPORTS -->
+    <div class="page" id="page-imports">
+      <div class="pg-hdr"><span class="pg-title">Imports</span><span class="pg-sub">&middot; 4 DLLs &middot; 21 functions</span></div>
+      <div class="pg-content">
+        <table class="dt">
+          <thead><tr><th>DLL</th><th>Function</th><th>RVA</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">CreateFileA</td><td class="mn dm">0x19010</td><td class="dm">file I/O</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">ReadFile</td><td class="mn dm">0x19018</td><td class="dm">file I/O</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">WriteFile</td><td class="mn dm">0x19020</td><td class="dm">file I/O</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">HeapAlloc</td><td class="mn dm">0x19028</td><td style="color:var(--amber);">&#9888; vuln alloc site</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">HeapFree</td><td class="mn dm">0x19030</td><td class="dm">heap free</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">HeapCreate</td><td class="mn dm">0x19038</td><td class="dm">heap init</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">VirtualProtect</td><td class="mn dm">0x19040</td><td style="color:var(--amber);">&#9888; ROP target</td></tr>
+            <tr><td class="mn dm2">KERNEL32.dll</td><td class="mn">GetLastError</td><td class="mn dm">0x19048</td><td class="dm">error check</td></tr>
+            <tr><td class="mn dm2">VCRUNTIME140.dll</td><td class="mn">memcpy</td><td class="mn dm">0x190A0</td><td style="color:var(--red);">&#9888; overflow site</td></tr>
+            <tr><td class="mn dm2">VCRUNTIME140.dll</td><td class="mn">memset</td><td class="mn dm">0x190A8</td><td class="dm">mem init</td></tr>
+            <tr><td class="mn dm2">VCRUNTIME140.dll</td><td class="mn">memmove</td><td class="mn dm">0x190B0</td><td class="dm">mem move</td></tr>
+            <tr><td class="mn dm2">MSVCRT.dll</td><td class="mn">sprintf</td><td class="mn dm">0x190C0</td><td style="color:var(--red);">&#9888; format string</td></tr>
+            <tr><td class="mn dm2">MSVCRT.dll</td><td class="mn">printf</td><td class="mn dm">0x190C8</td><td style="color:var(--amber);">&#9888; format risk</td></tr>
+            <tr><td class="mn dm2">MSVCRT.dll</td><td class="mn">malloc</td><td class="mn dm">0x190D0</td><td class="dm">heap alloc</td></tr>
+            <tr><td class="mn dm2">MSVCRT.dll</td><td class="mn">free</td><td class="mn dm">0x190D8</td><td class="dm">heap free</td></tr>
+            <tr><td class="mn dm2">WS2_32.dll</td><td class="mn">recv</td><td class="mn dm">0x19100</td><td style="color:var(--red);">&#9888; feeds parser</td></tr>
+            <tr><td class="mn dm2">WS2_32.dll</td><td class="mn">recvfrom</td><td class="mn dm">0x19108</td><td style="color:var(--amber);">&#9888; UDP path</td></tr>
+            <tr><td class="mn dm2">WS2_32.dll</td><td class="mn">send</td><td class="mn dm">0x19110</td><td class="dm">network out</td></tr>
+            <tr><td class="mn dm2">WS2_32.dll</td><td class="mn">WSAStartup</td><td class="mn dm">0x19118</td><td class="dm">winsock init</td></tr>
+            <tr><td class="mn dm2">WS2_32.dll</td><td class="mn">bind</td><td class="mn dm">0x19120</td><td class="dm">socket bind</td></tr>
+            <tr><td class="mn dm2">WS2_32.dll</td><td class="mn">accept</td><td class="mn dm">0x19128</td><td class="dm">TCP accept</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXPORTS -->
+    <div class="page" id="page-exports">
+      <div class="pg-hdr"><span class="pg-title">Exports</span><span class="pg-sub">&middot; 3 symbols</span></div>
+      <div class="pg-content">
+        <table class="dt">
+          <thead><tr><th>Ordinal</th><th>Name</th><th>RVA</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td class="mn dm">1</td><td class="mn">NetCfgInit</td><td class="mn dm">0x00401080</td><td class="dm">entry initializer</td></tr>
+            <tr><td class="mn dm">2</td><td class="mn">NetCfgShutdown</td><td class="mn dm">0x00401200</td><td class="dm">cleanup handler</td></tr>
+            <tr><td class="mn dm">3</td><td class="mn">DiagGetStatus</td><td class="mn dm">0x004013A0</td><td style="color:var(--amber);">&#9888; calls LogDiagEvent</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /ws -->
+
+  <!-- ─ Operator Console ──────────────────────────────────────── -->
+  <div class="opc">
+    <div class="opc-hdr">
+      <span class="opc-lbl">Operator Console</span>
+      <div class="opc-st"><span class="opc-dot run"></span><span>running &middot; 1/4</span></div>
+    </div>
+
+    <div class="opc-sec">
+      <div class="opc-sec-lbl">Current Analysis</div>
+      <div class="opc-bullet">netcfgd.exe &mdash; CRASH mode</div>
+      <div class="opc-bullet">Isolating memcpy @ <strong>0x401af0</strong></div>
+      <div class="opc-bullet">3 CRITICAL findings on blackboard</div>
+      <div class="opc-bullet">Pheromone decay: 5% / iter</div>
+    </div>
+
+    <div class="opc-sec">
+      <div class="opc-sec-lbl">Next Actions</div>
+      <div class="opc-arrow">build harness &mdash; 0x401af0</div>
+      <div class="opc-arrow">build harness &mdash; 0x403C20</div>
+      <div class="opc-arrow">consensus vote</div>
+    </div>
+
+    <div class="opc-pipe">
+      <div class="opc-pipe-lbl">Phase Pipeline</div>
+      <div class="ph-item">
+        <div class="ph-cb done">&#10003;</div>
+        <div class="ph-info">
+          <div class="ph-name">attack surface mapping</div>
+          <div class="ph-agent">security-analyst</div>
+        </div>
+        <div class="ph-right">
+          <span class="ph-time">4.2s</span>
+          <span class="ph-arr">&#8250;</span>
+        </div>
+      </div>
+      <div class="ph-item">
+        <div class="ph-cb run">&#8943;</div>
+        <div class="ph-info">
+          <div class="ph-name">vulnerability isolation</div>
+          <div class="ph-agent">vuln-isolator</div>
+        </div>
+        <div class="ph-right">
+          <span class="ph-time running">running...</span>
+          <span class="ph-arr">&#8250;</span>
+        </div>
+      </div>
+      <div class="ph-item">
+        <div class="ph-cb q"></div>
+        <div class="ph-info">
+          <div class="ph-name">harness build</div>
+          <div class="ph-agent">harness-engineer</div>
+        </div>
+        <div class="ph-right">
+          <span class="ph-time">queued</span>
+          <span class="ph-arr">&#8250;</span>
+        </div>
+      </div>
+      <div class="ph-item">
+        <div class="ph-cb q"></div>
+        <div class="ph-info">
+          <div class="ph-name">consensus vote</div>
+          <div class="ph-agent">all agents</div>
+        </div>
+        <div class="ph-right">
+          <span class="ph-time">queued</span>
+          <span class="ph-arr">&#8250;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="opc-inp-wrap">
+      <div class="opc-inp">
+        <input type="text" placeholder="Enter prompt or override..." id="op-prompt">
+        <div class="opc-inp-ft">
+          <span class="inp-hint">Ctrl+Enter to dispatch</span>
+          <button class="inp-send">&#9166;</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /opc -->
+
+</div><!-- /wb -->
+</div><!-- /app -->
+
+<!-- Settings modal -->
+<div class="modal hidden" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal-box">
+    <div class="modal-title">Settings<button class="modal-x" onclick="closeSettings()">&#10005;</button></div>
+    <div class="modal-grp">
+      <div class="modal-grp-lbl">MCP Endpoints</div>
+      <div class="modal-row"><span class="modal-lbl">IDA Pro MCP</span><input class="modal-inp" value="localhost:13337"></div>
+      <div class="modal-row"><span class="modal-lbl">Ghidra MCP</span><input class="modal-inp" value="localhost:13338"></div>
+      <div class="modal-row"><span class="modal-lbl">Binary Ninja MCP</span><input class="modal-inp" value="localhost:13339"></div>
+    </div>
+    <div class="modal-grp">
+      <div class="modal-grp-lbl">Model</div>
+      <div class="modal-row"><span class="modal-lbl">Council orchestrator</span><input class="modal-inp" value="claude-opus-4-8"></div>
+      <div class="modal-row"><span class="modal-lbl">Worker agents</span><input class="modal-inp" value="claude-sonnet-4-6"></div>
+    </div>
+    <div class="modal-grp">
+      <div class="modal-grp-lbl">Analysis</div>
+      <div class="modal-row"><span class="modal-lbl">Pheromone decay</span><input class="modal-inp" value="5% / iteration"></div>
+      <div class="modal-row"><span class="modal-lbl">Confirm boost</span><input class="modal-inp" value="+0.15"></div>
+      <div class="modal-row"><span class="modal-lbl">Max iterations</span><input class="modal-inp" value="32"></div>
+      <div class="modal-row"><span class="modal-lbl">Consensus threshold</span><input class="modal-inp" value="3 / 4 agents"></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

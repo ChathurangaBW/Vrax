@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UAC Master List",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "windows_build_note", "uacme_methods", "non_uacme_primitives"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "generated_at": { "type": "string" },
+    "windows_build_note": { "type": "string" },
+    "uacme_source_commit": { "type": "string" },
+    "uacme_methods": {
+      "type": "array",
+      "minItems": 40,
+      "items": { "$ref": "#/$defs/uacme_row" }
+    },
+    "non_uacme_primitives": {
+      "type": "array",
+      "minItems": 5,
+      "items": { "$ref": "#/$defs/non_uacme_row" }
+    }
+  },
+  "$defs": {
+    "uacme_row": {
+      "type": "object",
+      "required": [
+        "id", "name", "uacme_id", "attack_surface", "verification_level", "status",
+        "works_from", "fixed_in", "evidence_sources", "ida_analysis_notes",
+        "detection_summary", "mitigation_summary"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "uacme_id": { "type": "integer", "minimum": 43, "maximum": 82 },
+        "name": { "type": "string" },
+        "attack_surface": { "type": "string" },
+        "verification_level": {
+          "enum": ["VERIFIED_ACTIVE", "VERIFIED_PATCHED", "VERIFIED_REMOVED", "UNVERIFIED"]
+        },
+        "status": { "type": "string" },
+        "works_from": { "type": "string" },
+        "fixed_in": { "type": "string" },
+        "host_binary": { "type": "string" },
+        "evidence_sources": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "ida_analysis_notes": { "type": "string" },
+        "detection_summary": { "type": "string" },
+        "mitigation_summary": { "type": "string" }
+      }
+    },
+    "non_uacme_row": {
+      "type": "object",
+      "required": ["id", "name", "attack_surface", "verification_level", "notes"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "attack_surface": { "type": "string" },
+        "verification_level": { "enum": ["VERIFIED_PATCHED", "UNVERIFIED"] },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

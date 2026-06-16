@@ -1,0 +1,12 @@
+{
+  "name": "vrax",
+  "version": "1.0.0",
+  "description": "VRAX — Autonomous RE AI Swarm Workstation",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^30.5.1"
+  }
+}

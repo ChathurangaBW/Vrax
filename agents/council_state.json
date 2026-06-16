@@ -1,0 +1,109 @@
+{
+    "session_id": "",
+    "target_binary": "ms-teams.exe",
+    "workspace_dir": "c:\\Users\\Sniffer\\.vrax",
+    "pipeline_mode": "",
+    "current_phase": 0,
+    "phases": {
+        "1_mapping": {
+            "status": "pending",
+            "architecture": "",
+            "mitigations": {
+                "aslr": false,
+                "dep": false,
+                "cfg": false,
+                "stack_cookies": false
+            },
+            "entry_points": [],
+            "license_checks": [],
+            "patch_points": [],
+            "validation_algo": "",
+            "crypto_type": "",
+            "self_integrity_checks": [],
+            "extracted_flag": "",
+            "inline_patch_bytes": [],
+            "notes": ""
+        },
+        "2_vulnerability": {
+            "status": "pending",
+            "crash_condition": "",
+            "offsets": {},
+            "bad_chars": [],
+            "padding_length": 0,
+            "notes": ""
+        },
+        "2.5_zero_day_hunt": {
+            "status": "in_progress",
+            "zero_day_findings": [],
+            "vulnerabilities": [],
+            "exploit_chains": [],
+            "mitigation_bypasses": [],
+            "novel_techniques": [],
+            "cvss_assessments": [],
+            "notes": ""
+        },
+        "2.6_poc_validation": {
+            "status": "pending",
+            "poc_scripts": [],
+            "validated_vulnerabilities": [],
+            "failed_pocs": [],
+            "poc_summary": {
+                "total_discovered": 0,
+                "poc_successful": 0,
+                "poc_failed": 0,
+                "ready_for_exploit": false
+            },
+            "notes": ""
+        },
+        "3_harness": {
+            "status": "pending",
+            "harness_source": "",
+            "compiled_exe": "",
+            "compilation_cmd": "",
+            "notes": ""
+        },
+        "3_patcher": {
+            "status": "pending",
+            "patcher_source": "",
+            "compiled_patcher": "",
+            "keygen_source": "",
+            "compiled_keygen": "",
+            "backup_created": false,
+            "patches_applied": [],
+            "notes": ""
+        },
+        "4_verification": {
+            "status": "pending",
+            "telemetry_path": "",
+            "verdict": "",
+            "rip_expected": "",
+            "rip_actual": "",
+            "exception_code": "",
+            "iteration": 0,
+            "notes": ""
+        },
+        "5_report": {
+            "status": "pending",
+            "report_path": "",
+            "notes": ""
+        },
+        "uac_bypass_findings": {
+            "status": "pending",
+            "phase1_re": "pending",
+            "candidates_file": "uac_candidates.json",
+            "ida_evidence": "ida_evidence.json",
+            "poc_validation": {
+                "status": "pending",
+                "validated": 0,
+                "failed": 0,
+                "poc_results": "uac_poc_results.json",
+                "poc_report": "poc_validation_report.json"
+            },
+            "ready_for_bounty_report": false,
+            "validation_verdict": "",
+            "master_list": "",
+            "bounty_report": "",
+            "notes": ""
+        }
+    }
+}

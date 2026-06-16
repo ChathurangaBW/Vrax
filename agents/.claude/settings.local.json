@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Sniffer/Downloads/skills-main/skills-main/skills/caido-mode/**)",
+      "Bash(npm install:*)",
+      "Bash(npx tsx:*)"
+    ]
+  }
+}

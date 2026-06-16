@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.1",
+  "description": "Curated external pointers — verify before merging into uac_master_list.json",
+  "topic_feeds": [
+    {
+      "id": "github-topic-uac-bypass",
+      "url": "https://github.com/topics/uac-bypass",
+      "type": "topic_aggregate",
+      "repo_count_approx": 101,
+      "priority": "secondary_after_uacme",
+      "notes": "Primary discovery feed for new primitives; heavy RAT/framework noise — use tier rules in uac-bypass-playbook"
+    },
+    {
+      "id": "github-topic-bypass-defender",
+      "url": "https://github.com/topics/bypass-defender",
+      "type": "topic_aggregate",
+      "repo_count_approx": 8,
+      "priority": "low",
+      "notes": "Mostly AV evasion; only WusaBypassUAC-class entries"
+    }
+  ],
+  "sources": [
+    {
+      "id": "hfiref0x-uacme",
+      "url": "https://github.com/hfiref0x/UACME",
+      "type": "primary_catalog",
+      "tier": "A",
+      "uac_relevant": true,
+      "verification_level": "VERIFIED_ACTIVE",
+      "notes": "Authoritative; methods 43-82 in agent scope"
+    },
+    {
+      "id": "sailay1996-uac-in-the-wild",
+      "url": "https://github.com/sailay1996/UAC_Bypass_In_The_Wild",
+      "type": "itw_enumeration",
+      "tier": "A",
+      "attack_surface": "auto_elevate_lolbin",
+      "last_updated_upstream": "2019-12",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "kudaes-elevator",
+      "url": "https://github.com/Kudaes/Elevator",
+      "type": "uac_primitive_reference",
+      "tier": "A",
+      "attack_surface": "appinfo_rpc_alpc",
+      "last_updated_upstream": "2023-10",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "wh0amitz-krbuacbypass",
+      "url": "https://github.com/wh0amitz/KRBUACBypass",
+      "type": "uac_primitive_reference",
+      "tier": "A",
+      "attack_surface": "token_manipulation",
+      "last_updated_upstream": "2023-08",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "blue0x1-uac-oneliners",
+      "url": "https://github.com/blue0x1/uac-bypass-oneliners",
+      "type": "technique_collection",
+      "tier": "B",
+      "last_updated_upstream": "2026-04",
+      "verification_level": "UNVERIFIED",
+      "notes": "High freshness signal; map each one-liner to taxonomy before catalog row"
+    },
+    {
+      "id": "azagarampur-byeintegrity8-uac",
+      "url": "https://github.com/AzAgarampur/byeintegrity8-uac",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "com_elevation",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "tijme-cmstplua-uac-bypass",
+      "url": "https://github.com/tijme/cmstplua-uac-bypass",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "com_elevation",
+      "related_uacme": "CMSTPLUA class",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "encodegroup-uac-silentclean",
+      "url": "https://github.com/EncodeGroup/UAC-SilentClean",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "scheduled_task_environment",
+      "related_uacme": "SilentCleanup class",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "gushmazuko-winbypass",
+      "url": "https://github.com/gushmazuko/WinBypass",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "registry_file_handler",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "k4sth4-uac-bypass-eventvwr",
+      "url": "https://github.com/k4sth4/UAC-bypass",
+      "docs_url": "https://k4sth4.github.io/UAC-bypass/",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "registry_file_handler",
+      "host_binary": "C:\\Windows\\System32\\eventvwr.exe",
+      "related_uacme": "EventVwr / mscfile handler hijack (UACME ~20, removed v3.5.0 catalog)",
+      "topic": "uac-bypass",
+      "verification_level": "UNVERIFIED",
+      "catalog_ready": true,
+      "primitive": {
+        "name": "Event Viewer (mscfile) registry hijack",
+        "mechanism": "Hijack HKCU handler for mscfile so auto-elevated eventvwr.exe launches attacker command at high IL without consent UI",
+        "registry_keys": [
+          "HKCU\\Software\\Classes\\mscfile\\shell\\open\\command"
+        ],
+        "broker_chain": "eventvwr.exe (autoElevate) → mmc.exe via hijacked open command",
+        "recon_documented": [
+          "whoami /all — Medium IL + Administrators group",
+          "HKLM\\...\\Policies\\System — EnableLUA, PromptOnSecureDesktop",
+          "strings on eventvwr.exe — autoElevate=true"
+        ],
+        "historical_status": "Patched on modern Windows 10/11 — cross-check UACME fixed_in before VERIFIED_ACTIVE",
+        "ida_analysis_notes": "eventvwr.exe RT_MANIFEST autoElevate; xref mscfile / mmc launch path; compare WinBypass fork",
+        "detection_summary": "Sysmon 13 on mscfile\\shell\\open\\command; elevated mmc.exe child from eventvwr with anomalous command line",
+        "mitigation_summary": "Keep UAC default; block registry writes to Classes\\mscfile from medium IL; EDR parent-child: eventvwr→mmc→script"
+      },
+      "agent_rules": "Catalog mechanism only — do not reproduce msfvenom/compiled PoC steps from the writeup"
+    },
+    {
+      "id": "secuproject-dllhijackingscanner",
+      "url": "https://github.com/SecuProject/DLLHijackingScanner",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "dll_hijack",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "yet-zio-wusabypassuac",
+      "url": "https://github.com/Yet-Zio/WusaBypassUAC",
+      "type": "uac_primitive_reference",
+      "tier": "B",
+      "attack_surface": "installer_wusa_shell",
+      "related_repos": ["https://github.com/L3cr0f/DccwBypassUAC"],
+      "topic": "bypass-defender",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "id": "roman0x0-defender-bypass",
+      "url": "https://github.com/Roman0x0/Windows-Defender-Bypass",
+      "type": "chain_reference",
+      "tier": "C",
+      "topic": "bypass-defender",
+      "verification_level": "UNVERIFIED"
+    }
+  ]
+}
