@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F7CFF;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#A78BFA;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F7CFF;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#A78BFA;stop-opacity:0.05"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="96" fill="#0D1117" stroke="url(#g1)" stroke-width="1.5" opacity="0.9"/>
+
+  <!-- Outer hex ring segments -->
+  <polygon points="100,14 130,31 130,169 100,186 70,169 70,31"
+           fill="none" stroke="url(#g1)" stroke-width="0.6" opacity="0.3"/>
+
+  <!-- Main triangle (outer) -->
+  <polygon points="100,30 168,148 32,148"
+           fill="url(#g2)" stroke="url(#g1)" stroke-width="2" stroke-linejoin="round"
+           filter="url(#glow)"/>
+
+  <!-- Inner triangle (inverted cutout accent) -->
+  <polygon points="100,62 140,130 60,130"
+           fill="#0D1117" stroke="url(#g1)" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Core center dot -->
+  <circle cx="100" cy="105" r="7" fill="url(#g1)" filter="url(#glow)"/>
+
+  <!-- Scan lines inside triangle -->
+  <line x1="68" y1="120" x2="132" y2="120" stroke="#4F7CFF" stroke-width="0.6" opacity="0.4"/>
+  <line x1="76" y1="110" x2="124" y2="110" stroke="#4F7CFF" stroke-width="0.6" opacity="0.3"/>
+
+  <!-- Corner ticks -->
+  <line x1="100" y1="30" x2="100" y2="42"  stroke="#4F7CFF" stroke-width="1.5" opacity="0.6"/>
+  <line x1="168" y1="148" x2="157" y2="142" stroke="#4F7CFF" stroke-width="1.5" opacity="0.6"/>
+  <line x1="32"  y1="148" x2="43"  y2="142" stroke="#4F7CFF" stroke-width="1.5" opacity="0.6"/>
+</svg>
